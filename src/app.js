@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   LoginContainer:{
     flex : 1,
     flexDirection : 'column',
-    paddingTop : 100,
+    justifyContent:'center',
     alignItems : 'center'
   },
   Text: {
@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
   Image : {
-    width:125,
-    height:125,
+    width:150,
+    height:150,
     marginBottom:10
   },
   Button: {
