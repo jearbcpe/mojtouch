@@ -14,6 +14,12 @@ const styles = StyleSheet.create({
     justifyContent : 'center',
     alignItems : 'center'
   },
+  LoginContainer:{
+    flex : 1,
+    flexDirection : 'column',
+    paddingTop : 100,
+    alignItems : 'center'
+  },
   Text: {
     textAlign: 'center',
     fontSize: 28,
@@ -29,7 +35,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 5,
     paddingLeft: 10,
-    width:'90%'
+    width:'70%'
+  },
+  Image : {
+    width:125,
+    height:125,
+    marginBottom:10
   },
   Button: {
     borderWidth: 1,
@@ -90,9 +101,9 @@ class App extends Component {
       <View style={{flex:1}}>
           {
             !props.fetchReducer.active  &&
-              <View style={styles.container}>
-              <Text style={styles.Text}>ระบบลงเวลาปฏิบัติงาน</Text>
-                  <Image style={{ width:150,height:150,marginBottom:10 }}
+              <View style={styles.LoginContainer}>
+              <Text style={styles.Text}>MOJ Touch</Text>
+                  <Image style={styles.Image}
                       source={{
                         uri: 'http://intranet.moj.go.th/assets/img/moj_logo.png',
                   }}/> 
@@ -100,9 +111,17 @@ class App extends Component {
                       placeholder={'Username'}/>
                   <TextInput style={styles.TextInput}
                       placeholder={'Password'}/>
-                  <Button onPress={() => props.userLogin()} title={'เข้าสู่ระบบ'} color="#0099ff" />
+                  <View style={{width:'70%'}}>
+                    <Button onPress={() => props.userLogin()} title={'ตกลง'} color="#0099ff" />
+                  </View>
               </View>
            
+          }
+          {
+            props.fetchReducer.active && this.state.activeTab == "attend" &&
+            <View style={styles.container}> 
+              <Text>ลงเวลา</Text>
+            </View>
           }
           {
             props.fetchReducer.active && this.state.activeTab == "news" &&
@@ -125,16 +144,11 @@ class App extends Component {
             <Button title='Load' onPress={()=> props.fetchData()}/>
             </View>
           }
-          {
-            props.fetchReducer.active && this.state.activeTab == "attend" &&
-            <View style={styles.container}> 
-              <Text>Attend</Text>
-            </View>
-          }
+       
           {
             props.fetchReducer.active &&  this.state.activeTab == "profile" &&
             <View style={styles.container}> 
-            <Text>Profile</Text>
+            <Text>ประวัติ</Text>
             </View>
           }
           
