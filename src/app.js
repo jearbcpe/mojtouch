@@ -23,19 +23,22 @@ const styles = StyleSheet.create({
   Text: {
     textAlign: 'center',
     fontSize: 28,
-    color: 'gray',
+    color: '#F3F3F3',
     marginBottom: 20,
 
   },  
   TextInput: {
+    color:'#F3F3F3',
     borderColor: 'gray',
     borderWidth: 1,
+    borderColor:'#1E1E1E',
     height: 40,
     marginBottom: 10,
-    backgroundColor: 'white',
+    backgroundColor: '#1E1E1E',
     borderRadius: 5,
     paddingLeft: 10,
-    width:'70%'
+    width:'80%',
+    borderRadius: 5
   },
   Image : {
     width:125,
@@ -45,7 +48,7 @@ const styles = StyleSheet.create({
   Button: {
     borderWidth: 1,
     height: 40,
-    marginBottom: 10,
+    marginBottom: 10
   }
 });
 
@@ -56,22 +59,22 @@ class App extends Component {
       key: 'attend',
       icon: 'alarm',
       label: 'ลงเวลา',
-      barColor: '#0F4D80',
-      pressColor: 'rgba(255, 255, 255, 0.16)'
+      barColor: '#FF4946',
+      pressColor: 'rgba(245, 245, 245, 0.16)'
     },
     {
       key: 'news',
       icon: 'book',
       label: 'ประชาสัมพันธ์',
-      barColor: '#0F4D80',
-      pressColor: 'rgba(255, 255, 255, 0.16)'
+      barColor: '#FF4946',
+      pressColor: 'rgba(245, 245, 245, 0.16)'
     },
     {
       key: 'profile',
       icon: 'account-key',
       label: 'ประวัติ',
-      barColor: '#0F4D80',
-      pressColor: 'rgba(255, 255, 255, 0.16)'
+      barColor: '#FF4946',
+      pressColor: 'rgba(245, 245, 245, 0.16)'
     },
   ]
  
@@ -80,7 +83,7 @@ class App extends Component {
   }
  
   renderIcon = icon => ({ isActive }) => (
-    <Icon size={22} color="white" name={icon} />
+    <Icon size={22} color="#F5F5F5" name={icon} />
   )
  
   renderTab = ({ tab, isActive }) => (
@@ -98,21 +101,25 @@ class App extends Component {
     
     return (
       
-      <View style={{flex:1}}>
+      <View style={{flex:1,backgroundColor:'#292929'}}>
           {
             !props.fetchReducer.active  &&
               <View style={styles.LoginContainer}>
-              <Text style={styles.Text}>MOJ Touch</Text>
+              <Text style={styles.Text}>Welcome</Text>
                   <Image style={styles.Image}
                       source={{
                         uri: 'http://intranet.moj.go.th/assets/img/moj_logo.png',
                   }}/> 
+                   <Text style={[styles.Text,{ fontSize: 16,paddingBottom:15}]}>MOJ TOUCH</Text>
                   <TextInput style={styles.TextInput}
-                      placeholder={'Username'}/>
+                      placeholder={'Username'} placeholderTextColor="#444444"/>
                   <TextInput style={styles.TextInput}
-                      placeholder={'Password'}/>
-                  <View style={{width:'70%'}}>
-                    <Button onPress={() => props.userLogin()} title={'ตกลง'} color="#0099ff" />
+                      placeholder={'Password'} placeholderTextColor="#444444"/>
+                  <View style={{width:'80%',paddingTop:15}}>
+                    <Button onPress={() => props.userLogin()} title={'Login'} color="#3469AF" />
+                  </View>
+                  <View style={{width:'80%',paddingTop:20}}>
+                    <Button onPress={() => props.userLogin()} title={'Enroll'} color="#FF4946" />
                   </View>
               </View>
            
