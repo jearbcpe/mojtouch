@@ -64,8 +64,31 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 60/2,
-    backgroundColor:'#008000',
+    backgroundColor:'#FFFFFF',
     position: 'absolute',
+  }
+});
+
+const borderCheck = StyleSheet.create({
+  captureCheckIn : {
+    borderColor:'white',
+    borderWidth:2,
+    backgroundColor:'green',
+    width:68,
+    height:68,
+    borderRadius: 68/2,
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  captureCheckOut : {
+    borderColor:'white',
+    borderWidth:2,
+    backgroundColor:'red',
+    width:68,
+    height:68,
+    borderRadius: 68/2,
+    alignItems:'center',
+    justifyContent:'center'
   }
 });
 
@@ -109,6 +132,8 @@ class App extends Component {
       renderIcon={this.renderIcon(tab.icon)}
     />
   )
+
+
  
   render() {
 
@@ -149,7 +174,8 @@ class App extends Component {
           {
             props.fetchReducer.active && this.state.activeTab == "attend" &&
             <View style={[styles.cameraPreview]}> 
-                <View style={{flex:1,
+                <View style={{
+                flex:1,
                 flexDirection:'row',
                 justifyContent:'flex-end',
                 width:'100%',
@@ -179,26 +205,16 @@ class App extends Component {
                   console.log(barcodes);
                 }}
               >
-            <View style={{flex:1,justifyContent:'flex-end',marginBottom:15,alignItems:'center'}}>
-              <View style={[styles.circleTakePhoeo,
-                {
-                borderColor:'white',
-                borderWidth:2,
-                backgroundColor:'#292929',
-                width:68,
-                height:68,
-                borderRadius: 68/2,
-                alignItems:'center',
-                justifyContent:'center'
-               }]}>           
-                    <TouchableOpacity
-                    onPress={() => this.props.userCheckIn(props.fetchReducer.token,props.fetchReducer.userId,props.fetchReducer.divnId)} 
-                    style={
-                      [styles.circleTakePhoto,
-                        {justifyContent:'center',alignItems:'center'}
-                      ]}>
-                      <Icon size={40} color="#F5F5F5" name="run" />
-                    </TouchableOpacity>    
+            <View style={{flex:1,justifyContent:'flex-end',marginBottom:25,alignItems:'center'}}>
+              <View style={[styles.circleTakePhoeo, (props.fetchReducer.alreadyCheckIn) ? borderCheck.captureCheckOut : borderCheck.captureCheckIn]}>           
+              <TouchableOpacity
+              onPress={() => this.props.userCheckIn(props.fetchReducer.token,props.fetchReducer.userId,props.fetchReducer.divnId)} 
+              style={
+                [styles.circleTakePhoto,
+                  {justifyContent:'center',alignItems:'center'}
+                ]}>
+                <Icon size={45} color={ props.fetchReducer.alreadyCheckIn ? 'red' : 'green'} name="run" />
+              </TouchableOpacity>    
               </View> 
               </View>
               </RNCamera>
@@ -248,6 +264,7 @@ class App extends Component {
     )
   }
 }
+
 
 //Used to add reducer's state into the props
 const mapStateToProps = (state) => ({
