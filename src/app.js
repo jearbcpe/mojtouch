@@ -4,7 +4,7 @@ import BottomNavigation, {FullTab} from 'react-native-material-bottom-navigation
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; 
 import { connect } from 'react-redux'
 import { fetchData } from './actions'
-import { userLogin } from './login'
+import { userLogin } from './actions/user'
 
 
 const styles = StyleSheet.create({
@@ -116,10 +116,10 @@ class App extends Component {
                   <TextInput style={styles.TextInput}
                       placeholder={'Password'} placeholderTextColor="#444444"/>
                   <View style={{width:'80%',paddingTop:15}}>
-                    <Button onPress={() => props.userLogin()} title={'Login'} color="#3469AF" />
+                    <Button onPress={() => this.props.login('teerapon')} title={'Login'} color="#3469AF" />
                   </View>
                   <View style={{width:'80%',paddingTop:20}}>
-                    <Button onPress={() => props.userLogin()} title={'Enroll'} color="#FF4946" />
+                    <Button onPress={() => this.props.login()} title={'Enroll'} color="#FF4946" />
                   </View>
               </View>
            
@@ -180,7 +180,10 @@ const mapStateToProps = (state) => ({
 
 //Used to add action (dispatch) : into the props
 
-const mapDispatchToProps = {fetchData,userLogin};
+const mapDispatchToProps = (dispatch) => ({
+  fetchData,
+  login : (key) => dispatch(userLogin(key))
+});
 
 /*
 const mapDispatchToProps = (dispatch) => ({
