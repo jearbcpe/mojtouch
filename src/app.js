@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, Button, StyleSheet, Image } from 'react-native';
+import { Text, TextInput, View, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import BottomNavigation, {FullTab} from 'react-native-material-bottom-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; 
+import { RNCamera } from 'react-native-camera';
 import { connect } from 'react-redux'
-import { fetchData } from './actions'
-import { userLogin } from './actions/user'
+import {  
+          userLogin,
+          usernameChangeText,
+          passwordChangeText  
+} from './actions/user';
+import { userCheckIn,userCheckOut } from './actions/attend';
 
 
 const styles = StyleSheet.create({
@@ -49,6 +54,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 40,
     marginBottom: 10
+  },
+  cameraPreview: {
+    flex: 1,
+    overflow: 'hidden',
+    height:'100%'
+  },
+  circleTakePhoto : {
+    width: 60,
+    height: 60,
+    borderRadius: 60/2,
+    backgroundColor:'#008000',
+    position: 'absolute',
   }
 });
 
@@ -57,7 +74,7 @@ class App extends Component {
   tabs = [
     {
       key: 'attend',
-      icon: 'alarm',
+      icon: 'run',
       label: 'ลงเวลา',
       barColor: '#FF4946',
       pressColor: 'rgba(245, 245, 245, 0.16)'
@@ -71,19 +88,17 @@ class App extends Component {
     },
     {
       key: 'profile',
-      icon: 'account-key',
+      icon: 'account',
       label: 'ประวัติ',
       barColor: '#FF4946',
       pressColor: 'rgba(245, 245, 245, 0.16)'
     },
   ]
  
-  state = {
-    activeTab: 'attend'
-  }
+  state = {activeTab: 'attend'}
  
   renderIcon = icon => ({ isActive }) => (
-    <Icon size={22} color="#F5F5F5" name={icon} />
+    <Icon size={18} color="#F5F5F5" name={icon} />
   )
  
   renderTab = ({ tab, isActive }) => (
@@ -112,22 +127,82 @@ class App extends Component {
                   }}/> 
                    <Text style={[styles.Text,{ fontSize: 16,paddingBottom:15}]}>MOJ TOUCH</Text>
                   <TextInput style={styles.TextInput}
-                      placeholder={'Username'} placeholderTextColor="#444444"/>
-                  <TextInput style={styles.TextInput}
-                      placeholder={'Password'} placeholderTextColor="#444444"/>
+                      placeholder={'Username'} placeholderTextColor="#444444"
+                      onChangeText={(username) => this.props.setUsername(username)}
+                      />
+                  <TextInput 
+                      secureTextEntry={true}
+                      style={styles.TextInput}
+                      placeholder={'Password'} placeholderTextColor="#444444"
+                      onChangeText={(username) => this.props.setPassword(username)}
+                      />
                   <View style={{width:'80%',paddingTop:15}}>
-                    <Button onPress={() => this.props.login('teerapon')} title={'Login'} color="#3469AF" />
+                    <Button onPress={() => this.props.userLogin(props.fetchReducer.username,props.fetchReducer.password)} title={'Login'} color="#3469AF" />
                   </View>
                   <View style={{width:'80%',paddingTop:20}}>
-                    <Button onPress={() => this.props.login()} title={'Enroll'} color="#FF4946" />
-                  </View>
+                    <Button onPress={() => this.props.userLogin(props.fetchReducer.username,props.fetchReducer.password)} title={'Enroll'} color="#FF4946" />
+                  </View> 
+                
               </View>
            
           }
           {
             props.fetchReducer.active && this.state.activeTab == "attend" &&
-            <View style={styles.container}> 
-              <Text>ลงเวลา</Text>
+            <View style={[styles.cameraPreview]}> 
+                <View style={{flex:1,
+                flexDirection:'row',
+                justifyContent:'flex-end',
+                width:'100%',
+                height:'100%',
+                }}>
+                <RNCamera
+                ref={ref => {
+                  this.camera = ref;
+                }}
+                style={{flex:1,width:'100%',height:'100%',alignItems:'center'
+              }}
+                type={RNCamera.Constants.Type.front}
+                flashMode={RNCamera.Constants.FlashMode.on}
+                androidCameraPermissionOptions={{
+                  title: 'Permission to use camera',
+                  message: 'We need your permission to use your camera',
+                  buttonPositive: 'Ok',
+                  buttonNegative: 'Cancel',
+                }}
+                androidRecordAudioPermissionOptions={{
+                  title: 'Permission to use audio recording',
+                  message: 'We need your permission to use your audio',
+                  buttonPositive: 'Ok',
+                  buttonNegative: 'Cancel',
+                }}
+                onGoogleVisionBarcodesDetected={({ barcodes }) => {
+                  console.log(barcodes);
+                }}
+              >
+            <View style={{flex:1,justifyContent:'flex-end',marginBottom:15,alignItems:'center'}}>
+              <View style={[styles.circleTakePhoeo,
+                {
+                borderColor:'white',
+                borderWidth:2,
+                backgroundColor:'#292929',
+                width:68,
+                height:68,
+                borderRadius: 68/2,
+                alignItems:'center',
+                justifyContent:'center'
+               }]}>           
+                    <TouchableOpacity
+                    onPress={() => this.props.userCheckIn(props.fetchReducer.token,props.fetchReducer.userId,props.fetchReducer.divnId)} 
+                    style={
+                      [styles.circleTakePhoto,
+                        {justifyContent:'center',alignItems:'center'}
+                      ]}>
+                      <Icon size={40} color="#F5F5F5" name="run" />
+                    </TouchableOpacity>    
+              </View> 
+              </View>
+              </RNCamera>
+              </View>
             </View>
           }
           {
@@ -166,6 +241,7 @@ class App extends Component {
               onTabPress={newTab => this.setState({ activeTab: newTab.key })}
               renderTab={this.renderTab}
               tabs={this.tabs}
+              style={{height:45}}
             />
         }
       </View>
@@ -179,17 +255,14 @@ const mapStateToProps = (state) => ({
 });
 
 //Used to add action (dispatch) : into the props
-
 const mapDispatchToProps = (dispatch) => ({
-  fetchData,
-  login : (key) => dispatch(userLogin(key))
+  //fetchData,
+  userLogin : (username,password) => dispatch(userLogin(username,password)),
+  setUsername : (txtKey) => dispatch(usernameChangeText(txtKey)),
+  setPassword : (txtKey) => dispatch(passwordChangeText(txtKey)),
+  userCheckIn : (token,userId,divnId) => dispatch(userCheckIn(token,userId,divnId)),
+  userCheckOut : (token,userId) => dispatch(userCheckOut(token,userId))
 });
 
-/*
-const mapDispatchToProps = (dispatch) => ({
-  fetchData: () => dispatch(fetchData),
-  userLogin: () => dispatch(userLogin)
-});
-*/
 //export default App
 export default connect(mapStateToProps,mapDispatchToProps)(App)
