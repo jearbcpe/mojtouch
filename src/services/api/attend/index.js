@@ -16,7 +16,7 @@ export const checkIn = (token,userId,divnId) =>{
     })
 }
 
-export const checkOut = (token,userId,divnId) =>{
+export const checkOut = (token,userId) =>{
   return new Promise((resolve,reject)=>{
       var url_ws_user = "https://portal.moj.go.th/ws/attend.php/checkOut";
       axios.post(url_ws_user, { token: token, userId: userId, platform: 'mobile' })

@@ -16,20 +16,33 @@ export const login = (username,password)=>{
 
 export const login = (username,password) =>{
     return new Promise((resolve,reject)=>{
-        const url_ws_user = "https://portal.moj.go.th/ws/user.php/verifyUser";
-
+        const url_ws_user = "https://portal.moj.go.th/ws/user.php/verifyUser";   
+        const url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkAlreadyCheckIn";
         axios.post(url_ws_user, { username: username, password: password })
         .then(res => {
           var rs = res.data;
           if (rs.status == "success") {
-            //SyncStorage.set('token', rs.token);
-            //console.log("Token" + SyncStorage.get('token'));
-  
-            //this.setState({ verifyStatus: true, token: rs.token, userId: rs.userId, d_id: rs.d_id })
-            //this.storeData(this.state);
-            //this.checkAlreadyCheckIn();
-            var userData = [{status:rs.status,token : rs.token, userId:rs.userId , divnId:rs.d_id}];
-            return resolve(userData);
+            axios.post(url_ws_attend, { token: rs.token, userId: rs.userId })
+            .then(resChk => {
+              var rsChk = resChk.data;
+              var checked = false
+              if (rsChk.status == "success") {
+
+                if(rsChk.checked=="1")
+                  checked = true;
+                else if(rsChk.checked=="0")
+                  checked = false;
+
+                var userData = [{status:rs.status,token : rs.token, userId:rs.userId , divnId : rs.d_id, alreadyCheckIn : checked}];
+                return resolve(userData);
+
+              }
+            })
+            .catch(error => {
+              console.error(error)
+            })
+
+            
             //return (true)
           }
           else if(rs.status == "fail"){

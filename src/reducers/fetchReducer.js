@@ -33,7 +33,14 @@ export default (state = initialState, {type,payload}) => {
         return { ...state, isFetching : false };
 
     case FETCHING_LOGIN:
-        return { ...state, active : payload[0].status ,token : payload[0].token, userId : payload[0].userId , divnId : payload[0].divnId };
+        return { 
+            ...state,
+            active : payload[0].status ,
+            token : payload[0].token,
+            userId : payload[0].userId ,
+            divnId : payload[0].divnId ,
+            alreadyCheckIn : payload[0].alreadyCheckIn
+        };
 
     case SET_USERNAME:
         return { ...state, username : payload }
