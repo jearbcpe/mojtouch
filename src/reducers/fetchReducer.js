@@ -4,7 +4,8 @@ import { FETCHING_DATA,
     FETCHING_LOGIN,
     SET_USERNAME,
     SET_PASSWORD,
-    ACTION_CHECKIN
+    ACTION_CHECKIN,
+    ACTION_CHECKOUT
 } from '../constants'
 
 const initialState = {
@@ -21,7 +22,7 @@ const initialState = {
 }
 
 export default (state = initialState, {type,payload}) => {
-    //console.log(state)
+    console.log(state)
     switch (type) {
     case FETCHING_DATA:
         return { ...state, isFetching : true , data:[]};
@@ -50,6 +51,9 @@ export default (state = initialState, {type,payload}) => {
 
     case ACTION_CHECKIN :
         return { ...state, alreadyCheckIn : payload}
+
+    case ACTION_CHECKOUT :
+            return { ...state }
 
     default:
         return state

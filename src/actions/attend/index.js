@@ -12,9 +12,8 @@ export const setStageToCheckIn = (data) => ({
     payload : data
 });
 
-export const setStageToCheckOut = (data) => ({
-    type: ACTION_CHECKOUT,
-    payload : data
+export const setStageToCheckOut = () => ({
+    type: ACTION_CHECKOUT
 });
 
 export const setStageToFetching = () => ({
@@ -31,7 +30,7 @@ export const userCheck = (alreadyCheckIn,token,userId,divnId,camera) =>{
         dispatch(setStageToFetching());
         if(alreadyCheckIn){
             checkOut(token,userId,camera).then(result=>{
-                dispatch(setStageToCheckIn(result))
+                dispatch(setStageToCheckOut(result))
             })
             .catch(error=>{
                 dispatch(setStageToFailure())

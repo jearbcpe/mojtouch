@@ -36,6 +36,9 @@ export const login = (username,password) =>{
                 var userData = [{status:rs.status,token : rs.token, userId:rs.userId , divnId : rs.d_id, alreadyCheckIn : checked}];
                 return resolve(userData);
 
+              }else{
+                var userData = [{status:rs.status,token : rs.token, userId:rs.userId , divnId : rs.d_id, alreadyCheckIn : false}];
+                return resolve(userData);
               }
             })
             .catch(error => {
