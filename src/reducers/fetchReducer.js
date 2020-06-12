@@ -21,7 +21,7 @@ const initialState = {
 }
 
 export default (state = initialState, {type,payload}) => {
-    console.log(state)
+    //console.log(state)
     switch (type) {
     case FETCHING_DATA:
         return { ...state, isFetching : true , data:[]};

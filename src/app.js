@@ -9,7 +9,7 @@ import {
           usernameChangeText,
           passwordChangeText  
 } from './actions/user';
-import { userCheckIn,userCheckOut } from './actions/attend';
+import { userCheck } from './actions/attend';
 
 
 const styles = StyleSheet.create({
@@ -207,14 +207,24 @@ class App extends Component {
               >
             <View style={{flex:1,justifyContent:'flex-end',marginBottom:25,alignItems:'center'}}>
               <View style={[styles.circleTakePhoeo, (props.fetchReducer.alreadyCheckIn) ? borderCheck.captureCheckOut : borderCheck.captureCheckIn]}>           
+              
               <TouchableOpacity
-              onPress={() => this.props.userCheckIn(props.fetchReducer.token,props.fetchReducer.userId,props.fetchReducer.divnId)} 
+              onPress={
+                () => 
+                this.props.userCheck(
+                  props.fetchReducer.alreadyCheckIn,
+                  props.fetchReducer.token,
+                  props.fetchReducer.userId,
+                  props.fetchReducer.divnId,
+                  this.camera
+              )} 
               style={
                 [styles.circleTakePhoto,
                   {justifyContent:'center',alignItems:'center'}
                 ]}>
                 <Icon size={45} color={ props.fetchReducer.alreadyCheckIn ? 'red' : 'green'} name="run" />
-              </TouchableOpacity>    
+              </TouchableOpacity>  
+                
               </View> 
               </View>
               </RNCamera>
@@ -273,12 +283,10 @@ const mapStateToProps = (state) => ({
 
 //Used to add action (dispatch) : into the props
 const mapDispatchToProps = (dispatch) => ({
-  //fetchData,
   userLogin : (username,password) => dispatch(userLogin(username,password)),
   setUsername : (txtKey) => dispatch(usernameChangeText(txtKey)),
   setPassword : (txtKey) => dispatch(passwordChangeText(txtKey)),
-  userCheckIn : (token,userId,divnId) => dispatch(userCheckIn(token,userId,divnId)),
-  userCheckOut : (token,userId) => dispatch(userCheckOut(token,userId))
+  userCheck : (alreadyCheckIn,token,userId,divnId,camera) => dispatch(userCheck(alreadyCheckIn,token,userId,divnId,camera)),
 });
 
 //export default App

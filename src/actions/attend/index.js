@@ -26,18 +26,29 @@ export const setStageToFailure = () => ({
 });
 
 
-export const userCheckIn = (token,userId,divnId) =>{
+export const userCheck = (alreadyCheckIn,token,userId,divnId,camera) =>{
     return (dispatch)=>{
         dispatch(setStageToFetching());
-        checkIn(token,userId,divnId).then(result=>{
-            dispatch(setStageToCheckIn(result))
-        })
-        .catch(error=>{
-            dispatch(setStageToFailure())
-        })
+        if(alreadyCheckIn){
+            checkOut(token,userId,camera).then(result=>{
+                dispatch(setStageToCheckIn(result))
+            })
+            .catch(error=>{
+                dispatch(setStageToFailure())
+            })
+        }
+        else{
+            checkIn(token,userId,divnId,camera).then(result=>{
+                dispatch(setStageToCheckIn(result))
+            })
+            .catch(error=>{
+                dispatch(setStageToFailure())
+            })
+        }
+       
     }
 }
-
+/*
 export const userCheckOut = (token,userId) =>{
     return (dispatch)=>{
         dispatch(setStageToFetching());
@@ -49,3 +60,4 @@ export const userCheckOut = (token,userId) =>{
         })
     }
 }
+*/
