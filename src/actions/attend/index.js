@@ -29,7 +29,7 @@ export const userCheck = (alreadyCheckIn,token,userId,divnId,camera) =>{
     return (dispatch)=>{
         dispatch(setStageToFetching());
         if(alreadyCheckIn){
-            checkOut(token,userId,camera).then(result=>{
+            checkOut(token,userId,divnId,camera).then(result=>{
                 dispatch(setStageToCheckOut(result))
             })
             .catch(error=>{

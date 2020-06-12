@@ -10,17 +10,29 @@ export const checkIn = async (token, userId, divnId, camera) => {
     const imageUriBase64 = await RNFS.readFile(filepath, 'base64');
     return new Promise((resolve, reject) => {
       Geolocation.getCurrentPosition((info) => {
-
         var lat = info.coords.latitude;
         var long = info.coords.longitude;
         // return new Promise((resolve,reject)=>{
-        var url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkIn";
-        axios.post(url_ws_attend, { token: token, userId: userId, d_id: divnId, platform: 'mobile' })
+        var url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkInMobile";
+        axios.post(url_ws_attend, 
+          { 
+            token: token,
+            userId: userId, 
+            d_id: divnId, 
+            platform: 'mobile',
+            checkInLat : lat, 
+            checkInLong : long,
+            checkInImage : 
+            { 
+              fileType : 'jpg',
+              oldfileName : 'checkIn_' + token,
+              fileBase64 : imageUriBase64
+            }
+          })
           .then(res => {
 
             var rs = res.data;
             if (rs.status == "success") {
-              console.log("check in success")
               return resolve(true);
             }
             else {
@@ -36,7 +48,7 @@ export const checkIn = async (token, userId, divnId, camera) => {
   }
 }
 
-export const checkOut = async (token, userId, camera) => {
+export const checkOut = async (token, userId, divnId, camera) => {
   if (camera) {
     const options = { quality: 0.5, base64: true };
     const data = await camera.takePictureAsync(options);
@@ -46,9 +58,22 @@ export const checkOut = async (token, userId, camera) => {
       Geolocation.getCurrentPosition((info) => {
         var lat = info.coords.latitude;
         var long = info.coords.longitude;
-
-        var url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkOut";
-        axios.post(url_ws_attend, { token: token, userId: userId, platform: 'mobile' })
+        var url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkOutMobile";
+          axios.post(url_ws_attend, 
+          { 
+            token: token,
+            userId: userId, 
+            d_id: divnId, 
+            platform: 'mobile',
+            checkOutLat : lat, 
+            checkOutLong : long,
+            checkOutImage : 
+              { 
+                fileType : 'jpg',
+                oldfileName : 'checkOut_' + token,
+                fileBase64 : imageUriBase64
+              }
+          })
           .then(res => {
 
             var rs = res.data;
