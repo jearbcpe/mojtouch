@@ -135,6 +135,7 @@ android {
         versionCode 1
         versionName "1.0"
         missingDimensionStrategy 'react-native-camera', 'general'
+        multiDexEnabled true //for android 5.0
     }
     splits {
         abi {

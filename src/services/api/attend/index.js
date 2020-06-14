@@ -1,6 +1,7 @@
 import axios from 'axios';
 import RNFS from 'react-native-fs'
 import Geolocation from '@react-native-community/geolocation';
+import { URL_WS_ATTEND } from '../../../constants'
 
 export const checkIn = async (token, userId, divnId, camera) => {
   if (camera) {
@@ -13,8 +14,8 @@ export const checkIn = async (token, userId, divnId, camera) => {
         var lat = info.coords.latitude;
         var long = info.coords.longitude;
         // return new Promise((resolve,reject)=>{
-        var url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkInMobile";
-        axios.post(url_ws_attend, 
+        //var url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkInMobile";
+        axios.post(URL_WS_ATTEND, 
           { 
             token: token,
             userId: userId, 
@@ -58,8 +59,8 @@ export const checkOut = async (token, userId, divnId, camera) => {
       Geolocation.getCurrentPosition((info) => {
         var lat = info.coords.latitude;
         var long = info.coords.longitude;
-        var url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkOutMobile";
-          axios.post(url_ws_attend, 
+        //var url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkOutMobile";
+          axios.post(URL_WS_ATTEND, 
           { 
             token: token,
             userId: userId, 

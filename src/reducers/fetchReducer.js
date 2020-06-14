@@ -5,7 +5,9 @@ import { FETCHING_DATA,
     SET_USERNAME,
     SET_PASSWORD,
     ACTION_CHECKIN,
-    ACTION_CHECKOUT
+    ACTION_CHECKOUT,
+    ACTION_VERIFYTOKEN,
+    ACTION_EXPIRETOKEN
 } from '../constants'
 
 const initialState = {
@@ -22,7 +24,7 @@ const initialState = {
 }
 
 export default (state = initialState, {type,payload}) => {
-    console.log(state)
+
     switch (type) {
     case FETCHING_DATA:
         return { ...state, isFetching : true , data:[]};
@@ -54,6 +56,22 @@ export default (state = initialState, {type,payload}) => {
 
     case ACTION_CHECKOUT :
             return { ...state }
+
+    case ACTION_VERIFYTOKEN :
+        return { ...state , token : payload.token , userId : payload.userId , divnId : payload.divnId , active : true , alreadyCheckIn : payload.alreadyCheckIn}
+        
+    case ACTION_EXPIRETOKEN :
+        return { ...state ,
+        token : '',
+        userId : '',
+        divnId : '',
+        username : '',
+        password : '',
+        active : false,
+        alreadyCheckIn : false,
+        isFetching: false,
+        isError: false 
+    }
 
     default:
         return state
