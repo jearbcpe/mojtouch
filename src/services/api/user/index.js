@@ -27,13 +27,13 @@ export const verifyToken = () => {
       //const url_ws_user = "https://portal.moj.go.th/ws/user.php/verifyUser";
       //const url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkAlreadyCheckIn";
   
-      axios.post(URL_WS_USER, { token: token })
+      axios.post(URL_WS_USER + "verifyToken", { token: token })
         .then(res => {
           var rs = res.data;
-            
-          if (rs.status != "success") {
+            console.log(rs.status)
+          if (rs.status == "success") {
   
-            axios.post(URL_WS_ATTEND, { token: token, userId: userId })
+            axios.post(URL_WS_ATTEND + "checkAlreadyCheckIn", { token: token, userId: userId })
               .then(resChk => {
                 var rsChk = resChk.data;
                 var checked = false
@@ -73,11 +73,11 @@ export const login = (username, password) => {
   return new Promise((resolve, reject) => {
     //const url_ws_user = "https://portal.moj.go.th/ws/user.php/verifyUser";
     //const url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkAlreadyCheckIn";
-    axios.post(URL_WS_USER, { username: username, password: password })
+    axios.post(URL_WS_USER + "verifyUser", { username: username, password: password })
       .then(res => {
         var rs = res.data;
         if (rs.status == "success") {
-          axios.post(URL_WS_ATTEND, { token: rs.token, userId: rs.userId })
+          axios.post(URL_WS_ATTEND + "checkAlreadyCheckIn", { token: rs.token, userId: rs.userId })
             .then(resChk => {
               var rsChk = resChk.data;
               var checked = false

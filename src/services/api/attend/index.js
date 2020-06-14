@@ -15,7 +15,7 @@ export const checkIn = async (token, userId, divnId, camera) => {
         var long = info.coords.longitude;
         // return new Promise((resolve,reject)=>{
         //var url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkInMobile";
-        axios.post(URL_WS_ATTEND, 
+        axios.post(URL_WS_ATTEND + "checkInMobile", 
           { 
             token: token,
             userId: userId, 
@@ -60,7 +60,7 @@ export const checkOut = async (token, userId, divnId, camera) => {
         var lat = info.coords.latitude;
         var long = info.coords.longitude;
         //var url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkOutMobile";
-          axios.post(URL_WS_ATTEND, 
+          axios.post(URL_WS_ATTEND + "checkOutMobile", 
           { 
             token: token,
             userId: userId, 

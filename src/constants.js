@@ -12,5 +12,5 @@ export const ACTION_EXPIRETOKEN = "ACTION_EXPIRETOKEN";
 export const SET_USERNAME = "SET_USERNAME";
 export const SET_PASSWORD = "SET_PASSWORD";
 
-export const URL_WS_USER = "https://portal.moj.go.th/ws/user.php/verifyUser";
-export const URL_WS_ATTEND = "https://portal.moj.go.th/ws/attend.php/checkAlreadyCheckIn";
+export const URL_WS_USER = "https://portal.moj.go.th/ws/user.php/";
+export const URL_WS_ATTEND = "https://portal.moj.go.th/ws/attend.php/";
