@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, Button, StyleSheet, Image, TouchableOpacity , Switch } from 'react-native';
+import { Text, TextInput, View, Button, StyleSheet, Image, TouchableOpacity, Switch } from 'react-native';
 import BottomNavigation, { FullTab } from 'react-native-material-bottom-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RNCamera } from 'react-native-camera';
@@ -31,18 +31,18 @@ const styles = StyleSheet.create({
   Text: {
     textAlign: 'center',
     fontSize: 28,
-    color: '#F3F3F3',
+    color: '#A34B62',
     marginBottom: 20,
 
   },
   TextInput: {
-    color: '#F3F3F3',
+    color: '#0365A7',
     borderColor: 'gray',
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: '#1E1E1E',
     height: 40,
     marginBottom: 10,
-    backgroundColor: '#1E1E1E',
+    backgroundColor: '#FFF2EA',
     borderRadius: 5,
     paddingLeft: 10,
     width: '80%',
@@ -76,7 +76,7 @@ const borderCheck = StyleSheet.create({
   captureCheckIn: {
     borderColor: 'white',
     borderWidth: 2,
-    backgroundColor: 'green',
+    backgroundColor: '#8EBFBB', //green
     width: 68,
     height: 68,
     borderRadius: 68 / 2,
@@ -86,7 +86,7 @@ const borderCheck = StyleSheet.create({
   captureCheckOut: {
     borderColor: 'white',
     borderWidth: 2,
-    backgroundColor: 'red',
+    backgroundColor: '#A34B62', //red
     width: 68,
     height: 68,
     borderRadius: 68 / 2,
@@ -115,21 +115,21 @@ class App extends Component {
       key: 'attend',
       icon: 'run',
       label: 'ลงเวลา',
-      barColor: '#FF4946',
+      barColor: '#0364A7',
       pressColor: 'rgba(245, 245, 245, 0.16)'
     },
     {
       key: 'news',
       icon: 'book',
       label: 'ประชาสัมพันธ์',
-      barColor: '#FF4946',
+      barColor: '#A34B62',
       pressColor: 'rgba(245, 245, 245, 0.16)'
     },
     {
       key: 'profile',
       icon: 'account',
       label: 'ประวัติ',
-      barColor: '#FF4946',
+      barColor: '#8EBFBB',
       pressColor: 'rgba(245, 245, 245, 0.16)'
     },
   ]
@@ -151,7 +151,7 @@ class App extends Component {
 
   UNSAFE_componentWillMount() {
     this.props.checkStillOnline();
-    this.setState({activeTab:'attend'});
+    this.setState({ activeTab: 'attend' });
   }
 
   render() {
@@ -159,7 +159,7 @@ class App extends Component {
     //props = this.props;
     return (
 
-      <View style={{ flex: 1, backgroundColor: '#292929' }}>
+      <View style={{ flex: 1, backgroundColor: '#8EBFBB' }}>
         {
           !this.props.fetchReducer.active &&
           <View style={styles.LoginContainer}>
@@ -170,24 +170,24 @@ class App extends Component {
               }} />
             <Text style={[styles.Text, { fontSize: 16, paddingBottom: 15 }]}>MOJ TOUCH</Text>
             <TextInput style={styles.TextInput}
-              placeholder={'Username'} placeholderTextColor="#444444"
+              placeholder={'Username'} placeholderTextColor="#A34B62"
               onChangeText={(username) => this.props.setUsername(username)}
             />
             <TextInput
               secureTextEntry={true}
               style={styles.TextInput}
-              placeholder={'Password'} placeholderTextColor="#444444"
+              placeholder={'Password'} placeholderTextColor="#A34B62"
               onChangeText={(username) => this.props.setPassword(username)}
             />
             <View style={{ width: '80%', paddingTop: 15 }}>
               <Button onPress={() => {
                 this.props.userLogin(this.props.fetchReducer.username, this.props.fetchReducer.password);
-                this.setState({activeTab:'attend'})
-                }
-              } title={'Login'} color="#3469AF" />
+                this.setState({ activeTab: 'attend' })
+              }
+              } title={'Login'} color="#0365A7" />
             </View>
             <View style={{ width: '80%', paddingTop: 20 }}>
-              <Button onPress={() => this.props.userLogin(this.props.fetchReducer.username, this.props.fetchReducer.password)} title={'Enroll'} color="#FF4946" />
+              <Button onPress={() => this.props.userLogin(this.props.fetchReducer.username, this.props.fetchReducer.password)} title={'Enroll'} color="#A34B62" />
             </View>
 
           </View>
@@ -229,107 +229,110 @@ class App extends Component {
                   console.log(barcodes);
                 }}
               >
-              
-              
-              <View style={{flex:3,flexDirection:'row',justifyContent:'space-between'}}>
-              
-               <View style={{flex:1,width:'30%',height:'40%',marginTop:20,marginLeft:10}}>
-                <View style={{flex:1,flexDirection:'column',alignItems:'flex-start',width:'80%'}}>
-                  <View style={{flex:1,flexDirection:'row'}}>
-                    <Icon style={{flex:1}} size={25} color="#7DCEA0" name="home" />
-                    <Text style={{flex:2, fontSize: 20,color:'#7DCEA0',fontWeight:'bold'}} >IN </Text>
-                    <Text style={{flex:3, fontSize: 20,color:'#7DCEA0',fontWeight:'bold'}} >14:54 น.</Text>
-                  </View>
-                  <View style={{flex:1,flexDirection:'row'}}>
-                  <Icon style={{flex:1}} size={25} color="#F5B7B1" name="office-building" />
-                    <Text style={{flex:2, fontSize: 20,color:'#F5B7B1',fontWeight:'bold'}} >OUT </Text>
-                    <Text style={{flex:3, fontSize: 20,color:'#F5B7B1',fontWeight:'bold'}} > -- : -- น.</Text>
-                  </View>
-                </View>
-              </View>
-              
-              
-              <View style={{flex: 1,justifyContent:'center',flexDirection:'column',alignItems:'flex-end',width:'30%',height:'80%',marginTop:10,marginRight:10}}>
-                <View style={{flex:1,marginRight:10,flexDirection:'column',justifyContent:'space-between',height:'100%'}}>
-                  <View style={{flex:3,flexDirection:'row'}}> 
-                  <Text style={{fontSize: 40,color:'white',fontWeight:'bold'}} >14:54 น.</Text>
-                  </View>
-                  <View style={{flex:1,flexDirection:'row',justifyContent:'flex-end',alignItems:'flex-end'}}> 
-                  <Text style={{fontSize: 20,textAlign:'right',color:'white'}}>5 มิ.ย.63 </Text>
-                  </View>
-                </View>
-                <View style={{justifyContent:'space-between',flex:1,flexDirection:'row',width:'60%',marginRight:5}}>
 
-                  <View style={{flex:1,flexDirection:'column',alignItems:'center'}}>
-                  { 
-                  !this.props.fetchReducer.waitConfirm &&
-                  <Icon style={{flex:1,borderColor:'blue'}} size={25} color="white" name="home" />
-                  }
-                  </View>
-                  <View style={{flex:1,flexDirection:'column',alignItems:'center'}}>
-                  { 
-                  !this.props.fetchReducer.waitConfirm &&
-                  <Switch
-                    trackColor={{ false: "#767577", true: "#81b0ff" }}
-                    thumbColor={true ? "#f5dd4b" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    value={true}
-                  />
-                  }
-                  </View>
-                  <View style={{flex:1,flexDirection:'column',alignItems:'center'}}>
-                  { 
-                  !this.props.fetchReducer.waitConfirm &&
-                      <Icon style={{flex:1}} size={25} color="white" name="office-building" />
-                  }
-                  </View>
-  
-                </View>
-              </View>
-              
-              </View>
-              <View style={{ flex: 5, justifyContent: 'flex-end', alignItems: 'center',width:'100%'}}>
-</View>
-              <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 25, alignItems: 'center',width:'100%'}}>
-                <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',width:'100%'}}>
-                <View style={{flex:1,flexDirection:'column',alignItems:'center'}}>
-                  <Icon style={{flex:1}} size={25} color="white" name="office-building" />
-                </View>
-                <View style={{flex:1,flexDirection:'column',alignItems:'center'}}>
-                <View style={[styles.circleTakePhoto, (this.props.fetchReducer.waitConfirm) ? borderCheck.captureConfirm : (this.props.fetchReducer.alreadyCheckIn) ? borderCheck.captureCheckOut : borderCheck.captureCheckIn,{flexDirection:'column',alignItems:'center'}]}>
 
-<TouchableOpacity
-  onPress={
-    () =>
-    {
-      if(!this.props.fetchReducer.waitConfirm){
-        this.props.userCheck(
-          this.props.fetchReducer.alreadyCheckIn,
-          this.props.fetchReducer.token,
-          this.props.fetchReducer.userId,
-          this.props.fetchReducer.divnId,
-          this.camera
-        );
-      }
-      else  
-        console.log('confirm!!');
-    }
-  }
-  style={
-    [styles.circleTakePhoto,
-    { justifyContent: 'center', alignItems: 'center' }
-    ]}>
-  <Icon size={45} color={this.props.fetchReducer.waitConfirm ? 'blue' : this.props.fetchReducer.alreadyCheckIn ? 'red' : 'green'} name={(this.props.fetchReducer.waitConfirm ? 'check' : 'run')} />
-</TouchableOpacity>
-</View>
-                </View>
-                <View style={{flex:1,flexDirection:'column',alignItems:'center'}}>
-                  <Icon style={{flex:1}} size={25} color="white" name="office-building" />
-                </View>
- 
+                <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'space-between' }}>
+
+                  <View style={{ flex: 1, width: '30%', height: '40%', marginTop: 20, marginLeft: 10,justifyContent: 'flex-start', flexDirection: 'column' }}>
+                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '80%' }}>
+                      <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <Icon style={{ flex: 1 }} size={25} color="#8EBFBB" name="home" />
+                        <Text style={{ flex: 2, fontSize: 20, color: '#8EBFBB', fontWeight: 'bold' }} >IN </Text>
+                        <Text style={{ flex: 3, fontSize: 20, color: '#8EBFBB', fontWeight: 'bold' }} >14:54 น.</Text>
+                      </View>
+                      <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <Icon style={{ flex: 1 }} size={25} color="#A34B62" name="office-building" />
+                        <Text style={{ flex: 2, fontSize: 20, color: '#A34B62', fontWeight: 'bold' }} >OUT </Text>
+                        <Text style={{ flex: 3, fontSize: 20, color: '#A34B62', fontWeight: 'bold' }} > -- : -- น.</Text>
+                      </View>
+                    </View>
                   </View>
-              </View>
-              
+
+
+                  <View style={{ flex: 1, justifyContent: 'flex-start', flexDirection: 'column', alignItems: 'flex-end', width: '30%', height: '80%', marginTop: 20, marginRight: 5 }}>
+                    <View style={{ flex: 1, marginRight: 10, flexDirection: 'column', justifyContent: 'flex-start', height: '50%' }}>
+                      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', marginTop: 0 }}>
+                        <Text style={{ fontSize: 40, color: 'white', fontWeight: 'bold', alignItems: 'flex-start' }} >14:54 น.</Text>
+                      </View>
+                      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-start', marginRight: 5 }}>
+                        <Text style={{ fontSize: 20, textAlign: 'right', color: 'white' }}>5 มิ.ย.63 </Text>
+                      </View>
+                    </View>
+                    <View style={{ flex: 1, flexDirection: 'row',justifyContent:'flex-end', width: '100%', height: '50%', marginRight: 20 }}>
+                      {/* ????? */}
+                      <Text style={{ fontSize: 15, color: 'yellow', fontWeight: 'bold',justifyContent:'flex-start', alignItems: 'flex-start' }} >สวัสดีวันจันทร์</Text>
+                    </View>
+                  </View>
+
+                </View>
+                <View style={{ flex: 5, justifyContent: 'flex-end', alignItems: 'center', width: '100%' }}>
+                </View>
+                <View style={{ justifyContent: 'space-between', flex: 1, flexDirection: 'row', width: '30%', height: '50%', marginRight: 10 }}>
+
+                  <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end',justifyContent:'center' }}>
+                    {
+                      !this.props.fetchReducer.waitConfirm &&
+                      <Icon size={30} color="white" name="home" />
+                    }
+                  </View>
+                  <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end',justifyContent:'center' }}>
+                    {
+                      !this.props.fetchReducer.waitConfirm &&
+                      <Switch
+                        trackColor={{ false: "#767577", true: "#81b0ff" }}
+                        thumbColor={true ? "#f5dd4b" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        value={true}
+                      />
+                    }
+                  </View>
+                  <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end',justifyContent:'center' }}>
+                    {
+                      !this.props.fetchReducer.waitConfirm &&
+                      <Icon  size={30} color="white" name="office-building" />
+                    }
+                  </View>
+
+                </View>
+                <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 25, alignItems: 'center', width: '100%' }}>
+                  <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+                    <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center' }}>
+                      <Icon style={{ flex: 1 }} size={25} color="white" name="office-building" />
+                    </View>
+                    <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center' }}>
+                      <View style={[styles.circleTakePhoto, (this.props.fetchReducer.waitConfirm) ? borderCheck.captureConfirm : (this.props.fetchReducer.alreadyCheckIn) ? borderCheck.captureCheckOut : borderCheck.captureCheckIn, { flexDirection: 'column', alignItems: 'center' }]}>
+
+                        <TouchableOpacity
+                          onPress={
+                            () => {
+                              if (!this.props.fetchReducer.waitConfirm) {
+                                this.props.userCheck(
+                                  this.props.fetchReducer.alreadyCheckIn,
+                                  this.props.fetchReducer.token,
+                                  this.props.fetchReducer.userId,
+                                  this.props.fetchReducer.divnId,
+                                  this.camera
+                                );
+                              }
+                              else
+                                console.log('confirm!!');
+                            }
+                          }
+                          style={
+                            [styles.circleTakePhoto,
+                            { justifyContent: 'center', alignItems: 'center' }
+                            ]}>
+                          <Icon size={45} color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#8EBFBB'} name={(this.props.fetchReducer.waitConfirm ? 'check' : 'run')} />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                    <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center' }}>
+                      <Icon style={{ flex: 1 }} size={25} color="white" name="office-building" />
+                    </View>
+
+                  </View>
+                </View>
+
               </RNCamera>
             </View>
           </View>
@@ -343,8 +346,8 @@ class App extends Component {
             {
               !this.props.fetchReducer.isFetching &&
 
-              this.props.fetchReducer.data.length ? (
-                this.props.fetchReducer.data.map((person, i) => {
+                this.props.fetchReducer.data.length ? (
+                  this.props.fetchReducer.data.map((person, i) => {
                     return <View key={i} >
                       <Text>Name : {person.name}</Text>
                       <Text>Position : {person.position}</Text>
@@ -394,7 +397,7 @@ const mapDispatchToProps = (dispatch) => ({
   setPassword: (txtKey) => dispatch(passwordChangeText(txtKey)),
   userCheck: (alreadyCheckIn, token, userId, divnId, camera) => dispatch(userCheck(alreadyCheckIn, token, userId, divnId, camera)),
   checkStillOnline: () => dispatch(checkStillOnline()),
-  userLogout : (token) => {dispatch(userLogout(token))}
+  userLogout: (token) => { dispatch(userLogout(token)) }
 });
 
 //export default App
