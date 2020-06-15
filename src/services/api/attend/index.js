@@ -3,8 +3,10 @@ import RNFS from 'react-native-fs'
 import Geolocation from '@react-native-community/geolocation';
 import { URL_WS_ATTEND } from '../../../constants'
 
+
 export const checkIn = async (token, userId, divnId, camera) => {
   if (camera) {
+    camera.pausePreview();
     const options = { quality: 0.5, base64: true };
     const data = await camera.takePictureAsync(options);
     const filepath = data.uri.split('//')[1];
@@ -50,15 +52,21 @@ export const checkIn = async (token, userId, divnId, camera) => {
 }
 
 export const checkOut = async (token, userId, divnId, camera) => {
+  
   if (camera) {
+    //camera.pausePreview();
+
     const options = { quality: 0.5, base64: true };
     const data = await camera.takePictureAsync(options);
     const filepath = data.uri.split('//')[1];
     const imageUriBase64 = await RNFS.readFile(filepath, 'base64');
+    camera.pausePreview();
+
     return new Promise((resolve, reject) => {
       Geolocation.getCurrentPosition((info) => {
         var lat = info.coords.latitude;
         var long = info.coords.longitude;
+       
         //var url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkOutMobile";
           axios.post(URL_WS_ATTEND + "checkOutMobile", 
           { 
@@ -80,6 +88,7 @@ export const checkOut = async (token, userId, divnId, camera) => {
             var rs = res.data;
 
             if (rs.status == "success") {
+              
               resolve(true);
             }
             else {

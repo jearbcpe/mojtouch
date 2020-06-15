@@ -4,9 +4,10 @@ import {
         FETCHING_DATA_FAILURE,
         SET_USERNAME,
         SET_PASSWORD,
-        ACTION_VERIFYTOKEN
+        ACTION_VERIFYTOKEN,
+        ACTION_LOGOUT
 } from '../../constants'
-import { login,verifyToken } from '../../services/api/user'
+import { login,logout,verifyToken } from '../../services/api/user'
 
 export const setStageToUsername = (data) => ({
     type: SET_USERNAME,
@@ -21,6 +22,10 @@ export const setStageToPassword = (data) => ({
 export const setStageToLogin = (data) => ({
     type: FETCHING_LOGIN,
     payload : data
+})
+
+export const setStateToLogout = () => ({
+    type: ACTION_LOGOUT
 })
 
 export const setStageToVerifyToken = (data) =>({
@@ -50,6 +55,21 @@ export const passwordChangeText = (password) =>{
     return (dispatch) => {
         dispatch(setStageToPassword(password))
     }
+}
+
+export const userLogout = (token) => {
+    return (dispatch)=>{
+       
+        dispatch(setStageToFetching());
+        logout(setStageToExpireToken)
+        .then(result=>{
+            if(result)
+                dispatch(setStateToLogout())
+        })
+        .catch(error=>{
+            dispatch(setStageToFailure())
+        })
+    } 
 }
 
 export const userLogin = (username,password) =>{

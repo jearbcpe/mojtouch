@@ -7,7 +7,8 @@ import { FETCHING_DATA,
     ACTION_CHECKIN,
     ACTION_CHECKOUT,
     ACTION_VERIFYTOKEN,
-    ACTION_EXPIRETOKEN
+    ACTION_EXPIRETOKEN,
+    ACTION_LOGOUT
 } from '../constants'
 
 const initialState = {
@@ -20,11 +21,12 @@ const initialState = {
     active : false,
     alreadyCheckIn : false,
     isFetching: false,
-    isError: false
+    isError: false,
+    waitConfirm : false
 }
 
 export default (state = initialState, {type,payload}) => {
-
+    console.log(state)
     switch (type) {
     case FETCHING_DATA:
         return { ...state, isFetching : true , data:[]};
@@ -42,7 +44,12 @@ export default (state = initialState, {type,payload}) => {
             token : payload[0].token,
             userId : payload[0].userId ,
             divnId : payload[0].divnId ,
-            alreadyCheckIn : payload[0].alreadyCheckIn
+            alreadyCheckIn : payload[0].alreadyCheckIn,
+            username : '',
+            password : '',
+            isFetching: false,
+            isError: false,
+            waitConfirm : false
         };
 
     case SET_USERNAME:
@@ -52,14 +59,22 @@ export default (state = initialState, {type,payload}) => {
         return { ...state, password : payload }
 
     case ACTION_CHECKIN :
-        return { ...state, alreadyCheckIn : payload}
+        return { ...state, alreadyCheckIn : payload,waitConfirm : payload}
 
     case ACTION_CHECKOUT :
-            return { ...state }
+            return { ...state ,waitConfirm : payload }
 
     case ACTION_VERIFYTOKEN :
-        return { ...state , token : payload.token , userId : payload.userId , divnId : payload.divnId , active : true , alreadyCheckIn : payload.alreadyCheckIn}
+        return { ...state ,
+             token : payload.token ,
+              userId : payload.userId ,
+               divnId : payload.divnId ,
+                active : true ,
+                 alreadyCheckIn : payload.alreadyCheckIn,
+                 waitConfirm : false
+            }
         
+    
     case ACTION_EXPIRETOKEN :
         return { ...state ,
         token : '',
@@ -70,7 +85,22 @@ export default (state = initialState, {type,payload}) => {
         active : false,
         alreadyCheckIn : false,
         isFetching: false,
-        isError: false 
+        isError: false ,
+        waitConfirm : false
+    }
+
+    case ACTION_LOGOUT:
+        return { ...state ,
+        token : '',
+        userId : '',
+        divnId : '',
+        username : '',
+        password : '',
+        active : false,
+        alreadyCheckIn : false,
+        isFetching: false,
+        isError: false,
+        waitConfirm : false
     }
 
     default:

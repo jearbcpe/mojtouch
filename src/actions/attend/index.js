@@ -12,8 +12,9 @@ export const setStageToCheckIn = (data) => ({
     payload : data
 });
 
-export const setStageToCheckOut = () => ({
-    type: ACTION_CHECKOUT
+export const setStageToCheckOut = (data) => ({
+    type: ACTION_CHECKOUT,
+    payload : data
 });
 
 export const setStageToFetching = () => ({

@@ -19,54 +19,78 @@ export const verifyToken = () => {
 
   return new Promise((resolve, reject) => {
     AsyncStorage.getItem('storeData').then((jsonValue) => {
-      var stateData = JSON.parse(jsonValue)
-      var token = stateData.token;
       
-      var userId = stateData.userId;
-      var divnId = stateData.divnId;
-      //const url_ws_user = "https://portal.moj.go.th/ws/user.php/verifyUser";
-      //const url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkAlreadyCheckIn";
-  
-      axios.post(URL_WS_USER + "verifyToken", { token: token })
-        .then(res => {
-          var rs = res.data;
-            console.log(rs.status)
-          if (rs.status == "success") {
-  
-            axios.post(URL_WS_ATTEND + "checkAlreadyCheckIn", { token: token, userId: userId })
-              .then(resChk => {
-                var rsChk = resChk.data;
-                var checked = false
-               
-                storeData({ token: token, userId: userId, divnId: divnId }); //AsyncStorage for token
-                if (rsChk.status == "success") {
-  
-                  if (rsChk.checked == "1")
-                    checked = true;
-                  else if (rsChk.checked == "0")
-                    checked = false;
-  
-                  return resolve({ token: token, userId: userId, divnId: divnId, active: true, alreadyCheckIn: checked });
-  
-                } else {
-                  return resolve({ token: token, userId: userId, divnId: divnId, active: true, alreadyCheckIn: false });
-                }
-              })
-              .catch(error => {
-                console.error(error)
-              })
-          } else {
-            return resolve({ active: false });
-          }
-  
-        })
-        .catch(error => {
-          console.error(error)
-        })
+      var stateData = JSON.parse(jsonValue)
+      if(stateData  != null){
+        var token = stateData.token;
+      
+        var userId = stateData.userId;
+        var divnId = stateData.divnId;
+        //const url_ws_user = "https://portal.moj.go.th/ws/user.php/verifyUser";
+        //const url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkAlreadyCheckIn";
+    
+        axios.post(URL_WS_USER + "verifyToken", { token: token })
+          .then(res => {
+            var rs = res.data;
+              console.log(rs.status)
+            if (rs.status == "success") {
+    
+              axios.post(URL_WS_ATTEND + "checkAlreadyCheckIn", { token: token, userId: userId })
+                .then(resChk => {
+                  var rsChk = resChk.data;
+                  var checked = false
+                 
+                  storeData({ token: token, userId: userId, divnId: divnId }); //AsyncStorage for token
+                  if (rsChk.status == "success") {
+    
+                    if (rsChk.checked == "1")
+                      checked = true;
+                    else if (rsChk.checked == "0")
+                      checked = false;
+    
+                    return resolve({ token: token, userId: userId, divnId: divnId, active: true, alreadyCheckIn: checked });
+    
+                  } else {
+                    return resolve({ token: token, userId: userId, divnId: divnId, active: true, alreadyCheckIn: false });
+                  }
+                })
+                .catch(error => {
+                  console.error(error)
+                })
+            } else {
+              return resolve({ active: false });
+            }
+    
+          })
+          .catch(error => {
+            console.error(error)
+          })
+      }
+
     });
     
     });
     
+}
+
+export const logout = (token) => {
+  return new Promise((resolve, reject) => {
+
+    axios.post(URL_WS_USER + "logout", { token : token })
+      .then(res => {
+        var rs = res.data;
+        //console.log(rs.status)
+        if (rs.status == "success") {
+          storeData({ token: '', userId: '', divnId: '' }); //AsyncStorage for token
+          return resolve(true)
+        }else
+          return resolve(false);
+
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  })
 }
 
 export const login = (username, password) => {
