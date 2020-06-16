@@ -8,6 +8,7 @@ import {
         ACTION_LOGOUT
 } from '../../constants'
 import { login,logout,verifyToken } from '../../services/api/user'
+import { getTimeAttend } from '../../services/api/attend'
 
 export const setStageToUsername = (data) => ({
     type: SET_USERNAME,
@@ -92,12 +93,21 @@ export const checkStillOnline = () =>{
         //dispatch(setStageToFetching());
         
         verifyToken()
-        .then(result=>{
-            console.log(result)
-            if(!result.active)
+        .then(rsToken=>{
+            console.log(rsToken)
+            if(!rsToken.active)
                 dispatch(setStageToExpireToken())
-            else if(result.active)
-                dispatch(setStageToVerifyToken(result))
+            else if(rsToken.active){
+                getTimeAttend()
+                .then(rsTA => {
+                    dispatch(setStageToVerifyToken({
+                        userData : rsToken , logTA : rsTA
+                    }))
+                });
+                
+                //dispatch(setStageToVerifyToken(result))
+            }
+                
 
         })
         .catch(error=>{

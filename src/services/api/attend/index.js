@@ -2,6 +2,7 @@ import axios from 'axios';
 import RNFS from 'react-native-fs'
 import Geolocation from '@react-native-community/geolocation';
 import { URL_WS_ATTEND } from '../../../constants'
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 export const checkIn = async (token, userId, divnId, camera) => {
@@ -36,10 +37,11 @@ export const checkIn = async (token, userId, divnId, camera) => {
 
             var rs = res.data;
             if (rs.status == "success") {
-              return resolve(true);
+              var cktime = rs.datetime.split(' ')[1];
+              return resolve({status:true ,time : cktime.substring(0, cktime.length - 3),inside : false});
             }
             else {
-              return resolve(false);
+              return resolve({status : false});
             }
           })
           .catch(error => {
@@ -88,11 +90,11 @@ export const checkOut = async (token, userId, divnId, camera) => {
             var rs = res.data;
 
             if (rs.status == "success") {
-              
-              resolve(true);
+              var cktime = rs.datetime.split(' ')[1];
+              return resolve({status:true ,time : cktime.substring(0, cktime.length - 3),inside : false});
             }
             else {
-              resolve(false);
+              resolve({status : false});
             }
           })
           .catch(error => {
@@ -102,4 +104,29 @@ export const checkOut = async (token, userId, divnId, camera) => {
       });
     })
   }
+}
+
+export const getTimeAttend = () => { 
+  return new Promise((resolve, reject) => {
+    AsyncStorage.getItem('storeData').then((jsonValue) => {
+      
+      var stateData = JSON.parse(jsonValue)
+      if(stateData  != null){
+        var token = stateData.token;
+        var userId = stateData.userId;
+        console.log(userId)
+        axios.post(URL_WS_ATTEND + "getTimeAttend", { token: token , userId : userId })
+        .then( result => {
+          var data = result.data;
+        
+          var checkInTime = (data.checkInDate != null) ? data.checkInDate.split(' ')[1] : '-- . --';
+          var checkOutTime = (data.checkOutDate != null) ? data.checkOutDate.split(' ')[1] : '-- . --';
+          return resolve( { checkInTime : checkInTime.substring(0, checkInTime.length - 3) , checkOutTime : checkOutTime.substring(0, checkOutTime.length - 3) } );
+        })
+        .catch(error => {
+          console.error(error)
+        })
+      }
+    });
+  })
 }

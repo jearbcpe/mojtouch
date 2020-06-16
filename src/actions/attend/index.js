@@ -2,11 +2,15 @@ import {
     FETCHING_DATA,
     FETCHING_DATA_FAILURE,
     ACTION_CHECKIN,
-    ACTION_CHECKOUT
+    ACTION_CHECKOUT,
+    ACTION_CANCELCHECK,
+    ACTION_SWITCHLOCATION
 } from '../../constants';
-import { checkIn,checkOut } from '../../services/api/attend';
+import { checkIn,checkOut,getTimeAttend } from '../../services/api/attend';
 
-
+export const setStageToCancelCheck = () => ({
+    type : ACTION_CANCELCHECK
+});
 export const setStageToCheckIn = (data) => ({
     type: ACTION_CHECKIN,
     payload : data
@@ -16,6 +20,10 @@ export const setStageToCheckOut = (data) => ({
     type: ACTION_CHECKOUT,
     payload : data
 });
+
+export const setStageToSwitchLocation = () => ({
+    type : ACTION_SWITCHLOCATION
+})
 
 export const setStageToFetching = () => ({
     type: FETCHING_DATA
@@ -31,7 +39,8 @@ export const userCheck = (alreadyCheckIn,token,userId,divnId,camera) =>{
         dispatch(setStageToFetching());
         if(alreadyCheckIn){
             checkOut(token,userId,divnId,camera).then(result=>{
-                dispatch(setStageToCheckOut(result))
+                if(result.status)
+                    dispatch(setStageToCheckOut(result))
             })
             .catch(error=>{
                 dispatch(setStageToFailure())
@@ -39,7 +48,8 @@ export const userCheck = (alreadyCheckIn,token,userId,divnId,camera) =>{
         }
         else{
             checkIn(token,userId,divnId,camera).then(result=>{
-                dispatch(setStageToCheckIn(result))
+                if(result.status)
+                    dispatch(setStageToCheckIn(result))
             })
             .catch(error=>{
                 dispatch(setStageToFailure())
@@ -48,16 +58,15 @@ export const userCheck = (alreadyCheckIn,token,userId,divnId,camera) =>{
        
     }
 }
-/*
-export const userCheckOut = (token,userId) =>{
+
+export const cancelCheck = () => {
     return (dispatch)=>{
-        dispatch(setStageToFetching());
-        checkOut(token,userId).then(result=>{
-            dispatch(setStageToCheckOut(result))
-        })
-        .catch(error=>{
-            dispatch(setStageToFailure())
-        })
+        dispatch(setStageToCancelCheck())
     }
 }
-*/
+
+export const switchLocation = () => {
+    return (dispatch) => {
+        dispatch(setStageToSwitchLocation())
+    }
+}
