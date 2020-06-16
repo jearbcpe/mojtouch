@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, Button, StyleSheet, Image, TouchableOpacity, Switch } from 'react-native';
+import { SafeAreaView, Text, TextInput, View, Button, StyleSheet, Image, TouchableOpacity, Switch } from 'react-native';
 import BottomNavigation, { FullTab } from 'react-native-material-bottom-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RNCamera } from 'react-native-camera';
