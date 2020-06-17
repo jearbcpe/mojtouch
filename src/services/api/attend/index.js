@@ -119,9 +119,15 @@ export const getTimeAttend = () => {
         .then( result => {
           var data = result.data;
         
-          var checkInTime = (data.checkInDate != null) ? data.checkInDate.split(' ')[1] : '-- . --';
-          var checkOutTime = (data.checkOutDate != null) ? data.checkOutDate.split(' ')[1] : '-- . --';
-          return resolve( { checkInTime : checkInTime.substring(0, checkInTime.length - 3) , checkOutTime : checkOutTime.substring(0, checkOutTime.length - 3) } );
+          var checkInTime = (data.checkInDate != null) ? data.checkInDate.split(' ')[1].substring(0, 5) : ' -- . --';
+          var checkOutTime = (data.checkOutDate != null) ? data.checkOutDate.split(' ')[1].substring(0, 5) : ' -- . --';
+          console.log(data);
+          return resolve( 
+            { checkInTime : checkInTime ,
+              checkOutTime : checkOutTime ,
+              checkInLocation : data.checkInLocation ,
+              checkOutLocation : data.checkOutLocation 
+            } );
         })
         .catch(error => {
           console.error(error)

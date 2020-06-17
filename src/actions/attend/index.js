@@ -4,7 +4,8 @@ import {
     ACTION_CHECKIN,
     ACTION_CHECKOUT,
     ACTION_CANCELCHECK,
-    ACTION_SWITCHLOCATION
+    ACTION_SWITCHLOCATION,
+    ACTION_CONFIRMCHECK
 } from '../../constants';
 import { checkIn,checkOut,getTimeAttend } from '../../services/api/attend';
 
@@ -20,6 +21,11 @@ export const setStageToCheckOut = (data) => ({
     type: ACTION_CHECKOUT,
     payload : data
 });
+
+export const setStateConfirmCheck = (data) => ({
+    type : ACTION_CONFIRMCHECK,
+    payload : data
+})
 
 export const setStageToSwitchLocation = () => ({
     type : ACTION_SWITCHLOCATION
@@ -68,5 +74,15 @@ export const cancelCheck = () => {
 export const switchLocation = () => {
     return (dispatch) => {
         dispatch(setStageToSwitchLocation())
+    }
+}
+
+export const confirmCheck = (camera) =>{
+    camera.resumePreview();
+    return (dispatch)=>{
+        getTimeAttend()
+        .then(rsTA => {
+            dispatch(setStateConfirmCheck({ logTA : rsTA}))
+        });          
     }
 }

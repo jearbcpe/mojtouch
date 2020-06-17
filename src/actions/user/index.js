@@ -78,8 +78,16 @@ export const userLogin = (username,password) =>{
        
         dispatch(setStageToFetching());
         login(username,password)
-        .then(result=>{
-            dispatch(setStageToLogin(result))
+        .then(rsUser=>{
+            //dispatch(setStageToLogin(rsUser))
+            
+            getTimeAttend()
+                .then(rsTA => {
+                    dispatch(setStageToLogin({
+                        userData : rsUser , logTA : rsTA
+                    }))
+                });
+                
         })
         .catch(error=>{
             dispatch(setStageToFailure())

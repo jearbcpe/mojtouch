@@ -31,6 +31,8 @@ const initialState = {
     insideCheckConfirm : false,
     checkInTime : '',
     checkOutTime : '',
+    checkInLocation : '',
+    checkOutLocation : ''
 }
 
 export default (state = initialState, {type,payload}) => {
@@ -48,16 +50,20 @@ export default (state = initialState, {type,payload}) => {
     case FETCHING_LOGIN:
         return { 
             ...state,
-            active : payload[0].status ,
-            token : payload[0].token,
-            userId : payload[0].userId ,
-            divnId : payload[0].divnId ,
-            alreadyCheckIn : payload[0].alreadyCheckIn,
+            active : payload.userData[0].status ,
+            token : payload.userData[0].token,
+            userId : payload.userData[0].userId ,
+            divnId : payload.userData[0].divnId ,
+            alreadyCheckIn : payload.userData[0].alreadyCheckIn,
             username : '',
             password : '',
             isFetching: false,
             isError: false,
-            waitConfirm : false
+            waitConfirm : false,
+            checkInTime : payload.logTA.checkInTime,
+            checkOutTime : payload.logTA.checkOutTime,
+            checkInLocation : payload.logTA.checkInLocation,
+            checkOutLocation : payload.logTA.checkOutLocation
         };
 
     case SET_USERNAME:
@@ -73,7 +79,15 @@ export default (state = initialState, {type,payload}) => {
             return { ...state ,waitConfirm : payload.status , timeCheckConfirm : payload.time , typeCheckConfirm : 'OUT' }
 
     case ACTION_CONFIRMCHECK : 
-            return { ...state ,waitConfirm : false , timeCheckConfirm : '' , typeCheckConfirm : '' }
+            return { ...state ,
+                waitConfirm : false ,
+                timeCheckConfirm : '' ,
+                typeCheckConfirm : '',
+                checkInTime : payload.logTA.checkInTime,
+                checkOutTime : payload.logTA.checkOutTime,
+                checkInLocation : payload.logTA.checkInLocation,
+                checkOutLocation : payload.logTA.checkOutLocation
+            }
 
     case ACTION_VERIFYTOKEN :
         return { ...state ,
@@ -84,7 +98,9 @@ export default (state = initialState, {type,payload}) => {
             alreadyCheckIn : payload.userData.alreadyCheckIn,
             waitConfirm : false,
             checkInTime : payload.logTA.checkInTime,
-            checkOutTime : payload.logTA.checkOutTime
+            checkOutTime : payload.logTA.checkOutTime,
+            checkInLocation : payload.logTA.checkInLocation,
+            checkOutLocation : payload.logTA.checkOutLocation
         }
     
     case ACTION_EXPIRETOKEN :

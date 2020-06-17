@@ -11,7 +11,7 @@ import {
   passwordChangeText,
   checkStillOnline
 } from './actions/user';
-import { userCheck,cancelCheck,switchLocation } from './actions/attend';
+import { userCheck,cancelCheck,switchLocation,confirmCheck } from './actions/attend';
 //import { captureScreen } from "react-native-view-shot";
 //import RNFS from 'react-native-fs';
 //import RNFetchBlob from 'react-native-fetch-blob';
@@ -105,7 +105,7 @@ const borderCheck = StyleSheet.create({
   captureConfirm: {
     borderColor: 'white',
     borderWidth: 2,
-    backgroundColor: 'blue',
+    backgroundColor: '#0364A7',
     width: 68,
     height: 68,
     borderRadius: 68 / 2,
@@ -170,7 +170,7 @@ class App extends Component {
     //props = this.props;
     return (
 
-      <View style={{ flex: 1, backgroundColor: '#8EBFBB' }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#8EBFBB' }}>
         {
           !this.props.fetchReducer.active &&
           <View style={styles.LoginContainer}>
@@ -272,15 +272,15 @@ class App extends Component {
 
                 <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'space-between' }}>
 
-                  <View style={{ flex: 1, width: '30%', height: '55%', marginTop: '5%', marginLeft: 10,justifyContent: 'flex-start', flexDirection: 'column' }}>
+                  <View style={{ flex: 1, width: '30%', height: '55%', marginTop: '2%', marginLeft: 10,justifyContent: 'flex-start', flexDirection: 'column' }}>
                     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '80%',paddingTop:'4%' }}>
                       <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <Icon style={{ flex: 1 }} size={25} color="#8EBFBB" name="home" />
+                        <Icon style={{ flex: 1 }} size={25} color="#8EBFBB" name={(this.props.fetchReducer.checkInLocation=="inside") ? 'office-building' : (this.props.fetchReducer.checkInLocation=="outside") ? 'home' : 'check' } />
                         <Text style={{ flex: 2, fontSize: 20, color: '#8EBFBB', fontWeight: 'bold' }} >IN </Text>
                         <Text style={{ flex: 3, fontSize: 20, color: '#8EBFBB', fontWeight: 'bold' }} >{this.props.fetchReducer.checkInTime} น.</Text>
                       </View>
                       <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <Icon style={{ flex: 1 }} size={25} color="#A34B62" name="office-building" />
+                        <Icon style={{ flex: 1 }} size={25} color="#A34B62" name={(this.props.fetchReducer.checkOutLocation=="inside") ? 'office-building' : (this.props.fetchReducer.checkOutLocation=="outside") ? 'home' : 'check' } />
                         <Text style={{ flex: 2, fontSize: 20, color: '#A34B62', fontWeight: 'bold' }} >OUT </Text>
                         <Text style={{ flex: 3, fontSize: 20, color: '#A34B62', fontWeight: 'bold' }} >{this.props.fetchReducer.checkOutTime} น.</Text>
                       </View>
@@ -288,7 +288,7 @@ class App extends Component {
                   </View>
 
 
-                  <View style={{ flex: 1, justifyContent: 'flex-start', flexDirection: 'column', alignItems: 'flex-end', width: '30%', height: '100%', marginTop: '5%', marginRight: '3%' }}>
+                  <View style={{ flex: 1, justifyContent: 'flex-start', flexDirection: 'column', alignItems: 'flex-end', width: '30%', height: '100%', marginTop: '2%', marginRight: '3%' }}>
                     <View style={{ flex: 1, marginRight: '3%', flexDirection: 'column', justifyContent: 'flex-start', height: '50%' }}>
                       <View style={{ flex: 3, flexDirection: 'row',justifyContent:'flex-end' ,alignItems: 'flex-start'}}>
                         <Text style={{ fontSize: 40, color: 'white', fontWeight: 'bold', alignItems: 'flex-start' }} >14:54 น.</Text>
@@ -369,7 +369,7 @@ class App extends Component {
                                 );
                               }
                               else
-                                console.log('confirm!!');
+                                this.props.confirmCheck(this.camera);
                             }
                           }
                           style={
@@ -453,7 +453,7 @@ class App extends Component {
             style={{ height: '8%' }}
           />
         }
-      </View>
+      </SafeAreaView>
     )
   }
 }
@@ -473,7 +473,8 @@ const mapDispatchToProps = (dispatch) => ({
   checkStillOnline: () => dispatch(checkStillOnline()),
   userLogout: (token) => { dispatch(userLogout(token)) },
   cancelCheck : () => { dispatch(cancelCheck())},
-  switchLocation : () => { dispatch(switchLocation())}
+  switchLocation : () => { dispatch(switchLocation())},
+  confirmCheck : (camera) => { dispatch(confirmCheck(camera))}
 });
 
 //export default App
