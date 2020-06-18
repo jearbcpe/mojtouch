@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Text, TextInput, View, Button, StyleSheet, Image, TouchableOpacity, Switch } from 'react-native';
+import { SafeAreaView, Text, TextInput, View, Button,
+   StyleSheet, Image, TouchableOpacity, Switch, FlatList } from 'react-native';
 import BottomNavigation, { FullTab } from 'react-native-material-bottom-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RNCamera } from 'react-native-camera';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import { SliderBox } from "react-native-image-slider-box";
 import {
   userLogin,
   userLogout,
@@ -15,6 +17,27 @@ import { userCheck,cancelCheck,switchLocation,confirmCheck } from './actions/att
 //import { captureScreen } from "react-native-view-shot";
 //import RNFS from 'react-native-fs';
 //import RNFetchBlob from 'react-native-fetch-blob';
+const stylesList = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 0,
+  },
+  item: {
+    backgroundColor: 'white',
+    padding: 15,
+    marginVertical: 3,
+    marginHorizontal: 5,
+    borderColor:'gray',
+    borderWidth:0
+  },
+  title: {
+    fontSize: 18,
+  },
+  detail : {
+    fontStyle: 'italic',
+    fontSize: 15
+  }
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -121,17 +144,17 @@ class App extends Component {
 
   tabs = [
     {
-      key: 'attend',
-      icon: 'run',
-      label: 'ลงเวลา',
-      barColor: '#0364A7',
-      pressColor: 'rgba(245, 245, 245, 0.16)'
-    },
-    {
       key: 'news',
       icon: 'book',
       label: 'ประชาสัมพันธ์',
       barColor: '#A34B62',
+      pressColor: 'rgba(245, 245, 245, 0.16)'
+    },
+    {
+      key: 'attend',
+      icon: 'run',
+      label: 'ลงเวลา',
+      barColor: '#0364A7',
       pressColor: 'rgba(245, 245, 245, 0.16)'
     },
     {
@@ -143,7 +166,15 @@ class App extends Component {
     },
   ]
 
-  state = { activeTab: 'attend' }
+  state = { 
+    activeTab: 'news',
+    images: [
+      "http://intranet.moj.go.th/assets/img/002.jpg",
+      "http://intranet.moj.go.th/assets/img/003.jpg",
+      "http://intranet.moj.go.th/assets/img/004.jpg",
+      "http://intranet.moj.go.th/assets/img/005.jpg",
+    ]
+ }
 
   toggleSwitch = () => {this.props.switchLocation()};
 
@@ -162,8 +193,55 @@ class App extends Component {
 
   UNSAFE_componentWillMount() {
     this.props.checkStillOnline();
-    this.setState({ activeTab: 'attend' });
+    this.setState({ activeTab: 'news' });
   }
+
+  Item({ title }) {
+    return (
+      <View style={styles.item}>
+        <Text style={styles.title}>{title}</Text>
+      </View>
+    );
+  }
+   DATA = [
+    {
+      id: '1',
+      divnLogo : 'logo_acc.png',
+      title: 'บอกเล่า .. เรื่องราวทุจริต ตอนที่ 2',
+      detail : 'ศูนย์ปฏิบัติการต่อต้านการทุจริต',
+      datetime : '18 มิ.ย. 9:33 น.'
+    },
+    {
+      id: '2',
+      divnLogo : 'logo_vcc.png',
+      title: 'ยุติธรรมอาสา ฉบับที่ 5/2563',
+      detail : 'ศูนย์ประสานงานจิตอาสากระทรวงยุติธรรม'
+    },
+    {
+      id: '3',
+      divnLogo : 'logo_acc.png',
+      title: 'บอกเล่า .. เรื่องราวทุจริต ตอนที่ 1',
+      detail : 'ศูนย์ปฏิบัติการต่อต้านการทุจริต',
+    },
+    {
+      id: '4',
+      divnLogo : 'logo_acc.png',
+      title: 'บอกเล่า .. เรื่องราวทุจริต ตอนที่ 1',
+      detail : 'ศูนย์ปฏิบัติการต่อต้านการทุจริต',
+    },
+    {
+      id: '5',
+      divnLogo : 'logo_acc.png',
+      title: 'บอกเล่า .. เรื่องราวทุจริต ตอนที่ 1',
+      detail : 'ศูนย์ปฏิบัติการต่อต้านการทุจริต',
+    },
+    {
+      id: '6',
+      divnLogo : 'logo_acc.png',
+      title: 'บอกเล่า .. เรื่องราวทุจริต ตอนที่ 1',
+      detail : 'ศูนย์ปฏิบัติการต่อต้านการทุจริต',
+    }
+  ];
 
   render() {
 
@@ -413,25 +491,51 @@ class App extends Component {
         }
         {
           this.props.fetchReducer.active && this.state.activeTab == "news" &&
-          <View style={styles.container}>
-            {
-              this.props.fetchReducer.isFetching && <Text>Loading</Text>
-            }
-            {
-              !this.props.fetchReducer.isFetching &&
+          <View style={[stylesList.container,{backgroundColor:'#F2F3F4'}]}>
+            <View style={{ flex:1.6,backgroundColor:'white',marginBottom:10}}>
+            <SliderBox
+              resizeMethod={'resize'}
+              resizeMode={'stretch'}
+              autoplayInterval={6000}
+              autoplay={true}
+              circleLoop={true}
+              ImageComponentStyle={{borderRadius: 0, width: '100%',height:'100%' ,marginTop: 0}}
+              images={this.state.images} // like this
+              onCurrentImagePressed={index => console.log(`image ${index} pressed`)}
+              currentImageEmitter={index => console.log(`current pos is: ${index}`)}
+            />
+            </View >
+            <View style={{flex:3,backgroundColor:'#FFFFFF',marginTop:'0.3%',paddingTop:5,paddingHorizontal:4}}>
+             <View style={stylesList.item} >
+               <Text style={[stylesList.title,{fontWeight:'bold'}]}>ข่าวประชาสัมพันธ์</Text>
+             </View>
+             <FlatList
+              data={this.DATA}
+              renderItem={({ item }) => 
+              <View style={[stylesList.item,{flex:1,flexDirection:'row',borderBottomWidth:0.3}]}>
+                <View style={{flex:1}}>
+                  <Image style={{width:60,height:60}}
+                  source={{
+                    uri: 'http://intranet.moj.go.th/assets/img/logo/'+item.divnLogo,
+                  }} />
+                </View>
+                <View style={{flex:4,flexDirection:'column'}}>
+                  <Text style={stylesList.title}>{item.title}</Text>
+                  <Text style={stylesList.detail}>{item.detail}</Text>
+                  <View style={{flex:1,flexDirection:'row',justifyContent:'flex-end'}}>
+                    <Text style={{alignItems:'flex-end'}}>{item.datetime}</Text>
+                  </View>
+                  
+                </View>
 
-                this.props.fetchReducer.data.length ? (
-                  this.props.fetchReducer.data.map((person, i) => {
-                    return <View key={i} >
-                      <Text>Name : {person.name}</Text>
-                      <Text>Position : {person.position}</Text>
-                    </View>
-                  })
-                ) : null
+              </View>
             }
-            <Button title='Load' onPress={() => this.props.fetchData()} />
-          </View>
-        }
+              keyExtractor={item => item.id}
+            />
+            </View>
+                  
+                </View>
+              }
 
         {
           this.props.fetchReducer.active && this.state.activeTab == "profile" &&
