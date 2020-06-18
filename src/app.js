@@ -493,7 +493,7 @@ class App extends Component {
                   <View style={{flex:1.5,flexDirection:'row',justifyContent:'flex-start',alignItems:'flex-start',paddingBottom:'2%'}}>
                       <View style={{flex:1,width:100,height:'100%',flexDirection:'column',justifyContent:'flex-start',alignItems:'center'}}>
                         <View style={{flex:2}}>
-                          <Icon size={30} color="red" name="text" />
+                          <Icon size={28} color="red" name="text" />
                         </View>
                         <View style={{flex:1,justifyContent:'flex-start'}}>
                           <Text style={stylesLink.txtName}>e-doc</Text>
@@ -501,7 +501,7 @@ class App extends Component {
                       </View>
                       <View style={{flex:1,width:100,height:'100%',flexDirection:'column',justifyContent:'flex-start',alignItems:'center'}}>
                         <View style={{flex:2}}>
-                          <Icon size={30} color="#8EBFBB" name="account" />
+                          <Icon size={28} color="#8EBFBB" name="account" />
                         </View>
                         <View style={{flex:1,justifyContent:'flex-start'}}>
                           <Text style={stylesLink.txtName}>dpis</Text>
@@ -509,7 +509,7 @@ class App extends Component {
                       </View>
                       <View style={{flex:1,width:100,height:'100%',flexDirection:'column',justifyContent:'flex-start',alignItems:'center'}}>
                         <View style={{flex:2}}>
-                          <Icon size={30} color="#0364A7" name="car" />
+                          <Icon size={28} color="#0364A7" name="car" />
                         </View>
                         <View style={{flex:1,justifyContent:'flex-start'}}>
                           <Text style={stylesLink.txtName}>จองรถ</Text>
@@ -517,7 +517,7 @@ class App extends Component {
                       </View>
                       <View style={{flex:1,width:100,height:'100%',flexDirection:'column',justifyContent:'flex-start',alignItems:'center'}}>
                         <View style={{flex:2}}>
-                          <Icon size={30} color="#f5dd4b" name="pencil" />
+                          <Icon size={28} color="#f5dd4b" name="pencil" />
                         </View>
                         <View style={{flex:1,justifyContent:'flex-start'}}>
                           <Text style={stylesLink.txtName}>ลงทะเบียน</Text>
