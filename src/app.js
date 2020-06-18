@@ -490,8 +490,8 @@ class App extends Component {
                <Text style={[stylesList.title,{fontWeight:'bold'}]}>ระบบงาน</Text>
              </View>
             <ScrollView horizontal={true} style={[stylesLink.scrollViewLink]} showsHorizontalScrollIndicator={false}>
-                  <View style={{flex:1.4,flexDirection:'row',justifyContent:'center',alignItems:'flex-start',marginBottom:'2%'}}>
-                    <View style={{flex:1,width:100,height:'100%',flexDirection:'column',justifyContent:'flex-start',alignItems:'center'}}>
+                  <View style={{flex:1.5,flexDirection:'row',justifyContent:'flex-start',alignItems:'flex-start',paddingBottom:'2%'}}>
+                      <View style={{flex:1,width:100,height:'100%',flexDirection:'column',justifyContent:'flex-start',alignItems:'center'}}>
                         <View style={{flex:2}}>
                           <Icon size={30} color="red" name="text" />
                         </View>
