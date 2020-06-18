@@ -205,6 +205,7 @@ class App extends Component {
   ]
 
 
+  
 
   toggleSwitch = () => { this.props.switchLocation() };
 
