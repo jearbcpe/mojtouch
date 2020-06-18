@@ -15,8 +15,11 @@ export const ACTION_EXPIRETOKEN = "ACTION_EXPIRETOKEN";
 
 export const ACTION_CANCELCHECK = "ACTION_CANCELCHECK";
 
+export const ACTION_GETNEWS = "ACTION_GETNEWS";
+
 export const SET_USERNAME = "SET_USERNAME";
 export const SET_PASSWORD = "SET_PASSWORD";
 
 export const URL_WS_USER = "https://portal.moj.go.th/ws/user.php/";
 export const URL_WS_ATTEND = "https://portal.moj.go.th/ws/attend.php/";
+export const URL_WS_NEWS = "http://intranet.moj.go.th/assets/jsonData/news.json";

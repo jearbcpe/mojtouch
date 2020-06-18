@@ -11,7 +11,8 @@ import { FETCHING_DATA,
     ACTION_LOGOUT,
     ACTION_CANCELCHECK,
     ACTION_CONFIRMCHECK,
-    ACTION_SWITCHLOCATION
+    ACTION_SWITCHLOCATION,
+    ACTION_GETNEWS
 } from '../constants'
 
 const initialState = {
@@ -32,11 +33,12 @@ const initialState = {
     checkInTime : '',
     checkOutTime : '',
     checkInLocation : '',
-    checkOutLocation : ''
+    checkOutLocation : '',
+    newsList : []
 }
 
 export default (state = initialState, {type,payload}) => {
-    console.log(state)
+    //console.log(state.newsList)
     switch (type) {
     case FETCHING_DATA:
         return { ...state, isFetching : true , data:[]};
@@ -63,7 +65,8 @@ export default (state = initialState, {type,payload}) => {
             checkInTime : payload.logTA.checkInTime,
             checkOutTime : payload.logTA.checkOutTime,
             checkInLocation : payload.logTA.checkInLocation,
-            checkOutLocation : payload.logTA.checkOutLocation
+            checkOutLocation : payload.logTA.checkOutLocation,
+            newsList : payload.rsContent
         };
 
     case SET_USERNAME:
@@ -100,7 +103,8 @@ export default (state = initialState, {type,payload}) => {
             checkInTime : payload.logTA.checkInTime,
             checkOutTime : payload.logTA.checkOutTime,
             checkInLocation : payload.logTA.checkInLocation,
-            checkOutLocation : payload.logTA.checkOutLocation
+            checkOutLocation : payload.logTA.checkOutLocation,
+            newsList : payload.rsContent
         }
     
     case ACTION_EXPIRETOKEN :
@@ -115,6 +119,8 @@ export default (state = initialState, {type,payload}) => {
     case ACTION_CANCELCHECK : 
         return {...state , waitConfirm:false}
 
+    case ACTION_GETNEWS :
+        return {...state , newsList : payload}
     default:
         return state
     }

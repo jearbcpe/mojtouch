@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { SafeAreaView, Text, TextInput, View, Button,
-   StyleSheet, Image, TouchableOpacity, Switch, FlatList } from 'react-native';
+   StyleSheet, Image, TouchableOpacity, Switch, FlatList , ScrollView} from 'react-native';
 import BottomNavigation, { FullTab } from 'react-native-material-bottom-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RNCamera } from 'react-native-camera';
@@ -14,6 +14,7 @@ import {
   checkStillOnline
 } from './actions/user';
 import { userCheck,cancelCheck,switchLocation,confirmCheck } from './actions/attend';
+import { getNews } from './actions/content';
 //import { captureScreen } from "react-native-view-shot";
 //import RNFS from 'react-native-fs';
 //import RNFetchBlob from 'react-native-fetch-blob';
@@ -24,18 +25,18 @@ const stylesList = StyleSheet.create({
   },
   item: {
     backgroundColor: 'white',
-    padding: 15,
+    padding: 10,
     marginVertical: 3,
     marginHorizontal: 5,
     borderColor:'gray',
     borderWidth:0
   },
   title: {
-    fontSize: 18,
+    fontSize: 15,
   },
-  detail : {
+  datetime : {
     fontStyle: 'italic',
-    fontSize: 15
+    fontSize: 12
   }
 });
 
@@ -101,6 +102,27 @@ const styles = StyleSheet.create({
     borderColor: '#FFFFFF',
    
     position: 'absolute',
+  },
+
+});
+
+const styleImageView = StyleSheet.create({
+  widthMore : {
+    width : '100%',
+    height : 250
+  },
+  heightMore : {
+    width : '100%',
+    height : 550
+  }
+});
+
+const stylesLink = StyleSheet.create({
+  scrollViewLink : {
+    flex : 1,
+  },
+  txtName : {
+    fontSize : 13
   }
 });
 
@@ -140,6 +162,9 @@ const borderCheck = StyleSheet.create({
 class App extends Component {
   constructor(props) {
     super(props);
+    state = { 
+      activeTab: 'news'
+   }
   }
 
   tabs = [
@@ -166,15 +191,7 @@ class App extends Component {
     },
   ]
 
-  state = { 
-    activeTab: 'news',
-    images: [
-      "http://intranet.moj.go.th/assets/img/002.jpg",
-      "http://intranet.moj.go.th/assets/img/003.jpg",
-      "http://intranet.moj.go.th/assets/img/004.jpg",
-      "http://intranet.moj.go.th/assets/img/005.jpg",
-    ]
- }
+
 
   toggleSwitch = () => {this.props.switchLocation()};
 
@@ -194,6 +211,7 @@ class App extends Component {
   UNSAFE_componentWillMount() {
     this.props.checkStillOnline();
     this.setState({ activeTab: 'news' });
+    //this.props.getNews();
   }
 
   Item({ title }) {
@@ -203,59 +221,22 @@ class App extends Component {
       </View>
     );
   }
-   DATA = [
-    {
-      id: '1',
-      divnLogo : 'logo_acc.png',
-      title: 'บอกเล่า .. เรื่องราวทุจริต ตอนที่ 2',
-      detail : 'ศูนย์ปฏิบัติการต่อต้านการทุจริต',
-      datetime : '18 มิ.ย. 9:33 น.'
-    },
-    {
-      id: '2',
-      divnLogo : 'logo_vcc.png',
-      title: 'ยุติธรรมอาสา ฉบับที่ 5/2563',
-      detail : 'ศูนย์ประสานงานจิตอาสากระทรวงยุติธรรม'
-    },
-    {
-      id: '3',
-      divnLogo : 'logo_acc.png',
-      title: 'บอกเล่า .. เรื่องราวทุจริต ตอนที่ 1',
-      detail : 'ศูนย์ปฏิบัติการต่อต้านการทุจริต',
-    },
-    {
-      id: '4',
-      divnLogo : 'logo_acc.png',
-      title: 'บอกเล่า .. เรื่องราวทุจริต ตอนที่ 1',
-      detail : 'ศูนย์ปฏิบัติการต่อต้านการทุจริต',
-    },
-    {
-      id: '5',
-      divnLogo : 'logo_acc.png',
-      title: 'บอกเล่า .. เรื่องราวทุจริต ตอนที่ 1',
-      detail : 'ศูนย์ปฏิบัติการต่อต้านการทุจริต',
-    },
-    {
-      id: '6',
-      divnLogo : 'logo_acc.png',
-      title: 'บอกเล่า .. เรื่องราวทุจริต ตอนที่ 1',
-      detail : 'ศูนย์ปฏิบัติการต่อต้านการทุจริต',
-    }
-  ];
+
 
   render() {
 
     //props = this.props;
     return (
 
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#8EBFBB' }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
+        <View style={{flex:1,backgroundColor:'#8EBFBB'}}>
         {
           !this.props.fetchReducer.active &&
           <View style={styles.LoginContainer}>
             <Text style={styles.Text}>Welcome</Text>
             <Image style={styles.Image}
               source={{
-                uri: 'http://intranet.moj.go.th/assets/img/moj_logo.png',
+                uri: 'https://intranet.moj.go.th/assets/img/moj_logo.png',
               }} />
             <Text style={[styles.Text, { fontSize: 16, paddingBottom: 15 }]}>MOJ TOUCH</Text>
             <TextInput style={styles.TextInput}
@@ -492,8 +473,8 @@ class App extends Component {
         {
           this.props.fetchReducer.active && this.state.activeTab == "news" &&
           <View style={[stylesList.container,{backgroundColor:'#F2F3F4'}]}>
-            <View style={{ flex:1.6,backgroundColor:'white',marginBottom:10}}>
-            <SliderBox
+             <View style={{ flex:0.6,backgroundColor:'white',marginBottom:'2%'}}>
+           {/*  <SliderBox
               resizeMethod={'resize'}
               resizeMode={'stretch'}
               autoplayInterval={6000}
@@ -503,32 +484,85 @@ class App extends Component {
               images={this.state.images} // like this
               onCurrentImagePressed={index => console.log(`image ${index} pressed`)}
               currentImageEmitter={index => console.log(`current pos is: ${index}`)}
-            />
-            </View >
-            <View style={{flex:3,backgroundColor:'#FFFFFF',marginTop:'0.3%',paddingTop:5,paddingHorizontal:4}}>
+            /> */}
+            
+            <View style={stylesList.item} >
+               <Text style={[stylesList.title,{fontWeight:'bold'}]}>ระบบงาน</Text>
+             </View>
+            <ScrollView horizontal={true} style={[stylesLink.scrollViewLink]} showsHorizontalScrollIndicator={false}>
+                  <View style={{flex:1.4,flexDirection:'row',justifyContent:'center',alignItems:'flex-start',marginBottom:'2%'}}>
+                    <View style={{flex:1,width:100,height:'100%',flexDirection:'column',justifyContent:'flex-start',alignItems:'center'}}>
+                        <View style={{flex:2}}>
+                          <Icon size={30} color="red" name="text" />
+                        </View>
+                        <View style={{flex:1,justifyContent:'flex-start'}}>
+                          <Text style={stylesLink.txtName}>e-doc</Text>
+                        </View>
+                      </View>
+                      <View style={{flex:1,width:100,height:'100%',flexDirection:'column',justifyContent:'flex-start',alignItems:'center'}}>
+                        <View style={{flex:2}}>
+                          <Icon size={30} color="#8EBFBB" name="account" />
+                        </View>
+                        <View style={{flex:1,justifyContent:'flex-start'}}>
+                          <Text style={stylesLink.txtName}>dpis</Text>
+                        </View>
+                      </View>
+                      <View style={{flex:1,width:100,height:'100%',flexDirection:'column',justifyContent:'flex-start',alignItems:'center'}}>
+                        <View style={{flex:2}}>
+                          <Icon size={30} color="#0364A7" name="car" />
+                        </View>
+                        <View style={{flex:1,justifyContent:'flex-start'}}>
+                          <Text style={stylesLink.txtName}>จองรถ</Text>
+                        </View>
+                      </View>
+                      <View style={{flex:1,width:100,height:'100%',flexDirection:'column',justifyContent:'flex-start',alignItems:'center'}}>
+                        <View style={{flex:2}}>
+                          <Icon size={30} color="#f5dd4b" name="pencil" />
+                        </View>
+                        <View style={{flex:1,justifyContent:'flex-start'}}>
+                          <Text style={stylesLink.txtName}>ลงทะเบียน</Text>
+                        </View>
+                      </View>
+                    
+                  </View>
+                  
+               
+                </ScrollView>
+            </View > 
+            <View style={{flex:3,backgroundColor:'#FFFFFF',marginTop:'0.3%',paddingTop:5,paddingHorizontal:3}}>
              <View style={stylesList.item} >
                <Text style={[stylesList.title,{fontWeight:'bold'}]}>ข่าวประชาสัมพันธ์</Text>
              </View>
              <FlatList
-              data={this.DATA}
+              data={this.props.fetchReducer.newsList}
               renderItem={({ item }) => 
-              <View style={[stylesList.item,{flex:1,flexDirection:'row',borderBottomWidth:0.3}]}>
+              <View style={[{flex:1,flexDirection:'column'}]}>
+
+              <View style={[stylesList.item,{flex:1,flexDirection:'row'}]}>
                 <View style={{flex:1}}>
-                  <Image style={{width:60,height:60}}
+                  <Image style={{width:45,height:45}}
                   source={{
-                    uri: 'http://intranet.moj.go.th/assets/img/logo/'+item.divnLogo,
+                    uri: 'http://intranet.moj.go.th/'+item.divnLogo,
                   }} />
                 </View>
-                <View style={{flex:4,flexDirection:'column'}}>
+                <View style={{flex:5,flexDirection:'column'}}>
                   <Text style={stylesList.title}>{item.title}</Text>
-                  <Text style={stylesList.detail}>{item.detail}</Text>
-                  <View style={{flex:1,flexDirection:'row',justifyContent:'flex-end'}}>
+                  <Text style={stylesList.datetime}>{item.datetime}</Text>
+                 {/*  <View style={{flex:1,flexDirection:'row',justifyContent:'flex-end'}}>
                     <Text style={{alignItems:'flex-end'}}>{item.datetime}</Text>
-                  </View>
-                  
+                  </View> */}
+                 
                 </View>
 
               </View>
+              <View style={[stylesList.item,{flex:1,flexDirection:'column'}]}>
+                  <Image style={[(item.widthMore ? styleImageView.widthMore : styleImageView.heightMore)]}
+                  resizeMode="contain"
+                  source={{
+                    uri: (item.newsImage != '') ? 'http://intranet.moj.go.th/'+item.newsImage : null,
+                  }} />
+                </View>
+            </View>
             }
               keyExtractor={item => item.id}
             />
@@ -557,6 +591,7 @@ class App extends Component {
             style={{ height: '8%' }}
           />
         }
+        </View>
       </SafeAreaView>
     )
   }
@@ -578,7 +613,8 @@ const mapDispatchToProps = (dispatch) => ({
   userLogout: (token) => { dispatch(userLogout(token)) },
   cancelCheck : () => { dispatch(cancelCheck())},
   switchLocation : () => { dispatch(switchLocation())},
-  confirmCheck : (camera) => { dispatch(confirmCheck(camera))}
+  confirmCheck : (camera) => { dispatch(confirmCheck(camera))},
+  getNews : () => {dispatch(getNews())}
 });
 
 //export default App

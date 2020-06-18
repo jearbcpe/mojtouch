@@ -9,6 +9,7 @@ import {
 } from '../../constants'
 import { login,logout,verifyToken } from '../../services/api/user'
 import { getTimeAttend } from '../../services/api/attend'
+import { getContentNews } from '../../services/api/content';
 
 export const setStageToUsername = (data) => ({
     type: SET_USERNAME,
@@ -83,9 +84,15 @@ export const userLogin = (username,password) =>{
             
             getTimeAttend()
                 .then(rsTA => {
-                    dispatch(setStageToLogin({
-                        userData : rsUser , logTA : rsTA
-                    }))
+                    getContentNews().then(rsContent=>{  
+                        dispatch(setStageToLogin({
+                            userData : rsUser , logTA : rsTA , rsContent : rsContent
+                        }))
+                    })
+                    .catch(error=>{
+                        dispatch(setStageToFailure())
+                    })
+                    
                 });
                 
         })
@@ -108,9 +115,15 @@ export const checkStillOnline = () =>{
             else if(rsToken.active){
                 getTimeAttend()
                 .then(rsTA => {
-                    dispatch(setStageToVerifyToken({
-                        userData : rsToken , logTA : rsTA
-                    }))
+                    getContentNews().then(rsContent=>{  
+                        dispatch(setStageToVerifyToken({
+                            userData : rsToken , logTA : rsTA , rsContent : rsContent
+                        }))
+                    })
+                    .catch(error=>{
+                        dispatch(setStageToFailure())
+                    })
+                    
                 });
                 
                 //dispatch(setStageToVerifyToken(result))
