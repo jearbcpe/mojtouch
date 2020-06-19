@@ -1,11 +1,11 @@
 import axios from 'axios';
 import RNFS from 'react-native-fs'
 import Geolocation from '@react-native-community/geolocation';
-import { URL_WS_ATTEND } from '../../../constants'
+import { URL_WS_ATTEND,URL_WS_MASTER } from '../../../constants'
 import AsyncStorage from '@react-native-community/async-storage';
 
 
-export const checkIn = async (token, userId, divnId, camera) => {
+export const tempCheckIn = async (token, userId, divnId, camera) => {
   if (camera) {
     camera.pausePreview();
     const options = { quality: 0.5, base64: true };
@@ -16,9 +16,8 @@ export const checkIn = async (token, userId, divnId, camera) => {
       Geolocation.getCurrentPosition((info) => {
         var lat = info.coords.latitude;
         var long = info.coords.longitude;
-        // return new Promise((resolve,reject)=>{
-        //var url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkInMobile";
-        axios.post(URL_WS_ATTEND + "checkInMobile", 
+        
+        axios.post(URL_WS_ATTEND + "confirmCheckIn", 
           { 
             token: token,
             userId: userId, 
@@ -38,7 +37,14 @@ export const checkIn = async (token, userId, divnId, camera) => {
             var rs = res.data;
             if (rs.status == "success") {
               var cktime = rs.datetime.split(' ')[1];
-              return resolve({status:true ,time : cktime.substring(0, cktime.length - 3),inside : false});
+              var isInside = false;
+              if(rs.checkinLocation == "inside")
+                isInside = true;
+              return resolve({
+                status : true,
+                time : cktime.substring(0, cktime.length - 3),
+                tempId : rs.tempId,inside : isInside
+              });
             }
             else {
               return resolve({status : false});
@@ -53,7 +59,7 @@ export const checkIn = async (token, userId, divnId, camera) => {
   }
 }
 
-export const checkOut = async (token, userId, divnId, camera) => {
+export const tempCheckOut = async (token, userId, divnId, camera) => {
   
   if (camera) {
     //camera.pausePreview();
@@ -69,8 +75,7 @@ export const checkOut = async (token, userId, divnId, camera) => {
         var lat = info.coords.latitude;
         var long = info.coords.longitude;
        
-        //var url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkOutMobile";
-          axios.post(URL_WS_ATTEND + "checkOutMobile", 
+          axios.post(URL_WS_ATTEND + "confirmCheckOut", 
           { 
             token: token,
             userId: userId, 
@@ -91,7 +96,15 @@ export const checkOut = async (token, userId, divnId, camera) => {
 
             if (rs.status == "success") {
               var cktime = rs.datetime.split(' ')[1];
-              return resolve({status:true ,time : cktime.substring(0, cktime.length - 3),inside : false});
+              //console.log(rs.checkoutLocation);
+              var isInside = false;
+              if(rs.checkoutLocation == "inside")
+                isInside = true;
+              return resolve({
+                  status : true,
+                  time : cktime.substring(0, cktime.length - 3),
+                  tempId : rs.tempId,inside : isInside
+                });
             }
             else {
               resolve({status : false});
@@ -114,25 +127,75 @@ export const getTimeAttend = () => {
       if(stateData  != null){
         var token = stateData.token;
         var userId = stateData.userId;
-        console.log(userId)
+        //console.log(userId)
         axios.post(URL_WS_ATTEND + "getTimeAttend", { token: token , userId : userId })
         .then( result => {
           var data = result.data;
         
           var checkInTime = (data.checkInDate != null) ? data.checkInDate.split(' ')[1].substring(0, 5) : ' -- . --';
           var checkOutTime = (data.checkOutDate != null) ? data.checkOutDate.split(' ')[1].substring(0, 5) : ' -- . --';
-          console.log(data);
+
           return resolve( 
-            { checkInTime : checkInTime ,
+            { 
+              checkInTime : checkInTime ,
               checkOutTime : checkOutTime ,
               checkInLocation : data.checkInLocation ,
               checkOutLocation : data.checkOutLocation 
-            } );
+            } 
+          );
+          
+          
         })
         .catch(error => {
           console.error(error)
         })
       }
     });
+  })
+}
+
+export const confirmChk = (tempId,typeCheck,isInside) => { 
+  return new Promise((resolve, reject) => {
+    var type = '';
+    var location = 'outside';
+    if(isInside==true)
+      location = 'inside';
+      //console.log(isInside)
+    var sendData = {};
+    if(typeCheck == "IN"){
+      type = 'checkInMobile';
+      sendData = { tempId: tempId , checkinLocation : location };
+    }  
+    else if(typeCheck == "OUT"){
+      type = 'checkOutMobile';
+      sendData = { tempId: tempId , checkoutLocation : location };
+    }
+    
+  
+    axios.post(URL_WS_ATTEND + type, sendData)
+        .then( result => {
+          var data = result.data;
+        
+          if(data.status=="success"){
+            return resolve(true);
+          }
+          else{
+            return resolve(false);
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
+  });
+};
+
+export const getTime = () => { 
+  return new Promise((resolve, reject) => {
+    axios.post(URL_WS_MASTER + 'getTime')
+    .then( rsTime => {
+      var currentTime = rsTime.data.time;
+      //var currentSecond = rsTime.data.time.substring(6, 8);
+      return resolve( { currentTime : currentTime } );
+    })
   })
 }

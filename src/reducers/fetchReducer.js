@@ -12,11 +12,15 @@ import { FETCHING_DATA,
     ACTION_CANCELCHECK,
     ACTION_CONFIRMCHECK,
     ACTION_SWITCHLOCATION,
-    ACTION_GETNEWS
+    ACTION_GETNEWS,
+    GET_CURRENTTIME,
+    SET_UPDATETIMEMIN
 } from '../constants'
 
 const initialState = {
     data:[],
+    currentTime : '',
+    currentSecond : 0,
     token : '',
     userId : '',
     divnId : '',
@@ -30,6 +34,8 @@ const initialState = {
     timeCheckConfirm : '',
     typeCheckConfirm : '',
     insideCheckConfirm : false,
+    tempIdCheckConfirm : '',
+    isEnableSwitchLocation : false,
     checkInTime : '',
     checkOutTime : '',
     checkInLocation : '',
@@ -38,7 +44,7 @@ const initialState = {
 }
 
 export default (state = initialState, {type,payload}) => {
-    //console.log(state.newsList)
+    //console.log(state.currentSecond)
     switch (type) {
     case FETCHING_DATA:
         return { ...state, isFetching : true , data:[]};
@@ -48,6 +54,12 @@ export default (state = initialState, {type,payload}) => {
 
     case FETCHING_DATA_FAILURE:
         return { ...state, isFetching : false };
+
+    case GET_CURRENTTIME : 
+        return { ...state , currentTime : payload.currentTime }
+
+    case SET_UPDATETIMEMIN : 
+        return { ...state , currentTime : updateTimeMin(state.currentTime) ,currentSecond : 0 }
 
     case FETCHING_LOGIN:
         return { 
@@ -76,20 +88,38 @@ export default (state = initialState, {type,payload}) => {
         return { ...state, password : payload }
 
     case ACTION_CHECKIN :
-        return { ...state,waitConfirm : payload.status , timeCheckConfirm : payload.time , typeCheckConfirm : 'IN' , insideCheckConfirm : payload.inside}
+        return { ...state,
+                waitConfirm : payload.status,
+                timeCheckConfirm : payload.time,
+                typeCheckConfirm : 'IN',
+                insideCheckConfirm : payload.inside,
+                tempIdCheckConfirm : payload.tempId,
+                isEnableSwitchLocation : payload.inside
+            }
 
     case ACTION_CHECKOUT :
-            return { ...state ,waitConfirm : payload.status , timeCheckConfirm : payload.time , typeCheckConfirm : 'OUT' }
+            return { ...state ,
+                waitConfirm : payload.status ,
+                timeCheckConfirm : payload.time ,
+                typeCheckConfirm : 'OUT',
+                insideCheckConfirm : payload.inside,
+                tempIdCheckConfirm : payload.tempId,
+                isEnableSwitchLocation : payload.inside
+            }
 
     case ACTION_CONFIRMCHECK : 
             return { ...state ,
                 waitConfirm : false ,
                 timeCheckConfirm : '' ,
                 typeCheckConfirm : '',
+                insideCheckConfirm : false,
+                tempIdCheckConfirm : '',
+                alreadyCheckIn : true,
                 checkInTime : payload.logTA.checkInTime,
                 checkOutTime : payload.logTA.checkOutTime,
                 checkInLocation : payload.logTA.checkInLocation,
-                checkOutLocation : payload.logTA.checkOutLocation
+                checkOutLocation : payload.logTA.checkOutLocation,
+                isEnableSwitchLocation : false
             }
 
     case ACTION_VERIFYTOKEN :
@@ -124,4 +154,25 @@ export default (state = initialState, {type,payload}) => {
     default:
         return state
     }
+}
+
+export const updateTimeMin = (time) => {
+    var hour = parseInt(time.split(':')[0]);
+    var min = parseInt(time.split(':')[1]);
+    var sec = parseInt(time.split(':')[2]);
+
+    sec = sec + 1;
+    if(sec == 60)
+    {
+        sec = 0;
+        min = min + 1; 
+        if(min == 60){
+            min = 0;
+            hour = hour + 1;
+            if(hour == 24)
+                hour = 0;
+        }
+    }
+
+    return ('0' + hour).slice(-2) + ':' + ('0' + min).slice(-2)+ ':' + ('0' + sec).slice(-2) ;
 }

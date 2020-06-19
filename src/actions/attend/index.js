@@ -5,10 +5,20 @@ import {
     ACTION_CHECKOUT,
     ACTION_CANCELCHECK,
     ACTION_SWITCHLOCATION,
-    ACTION_CONFIRMCHECK
+    ACTION_CONFIRMCHECK,
+    GET_CURRENTTIME,
+    SET_UPDATETIMEMIN
 } from '../../constants';
-import { checkIn,checkOut,getTimeAttend } from '../../services/api/attend';
+import { tempCheckIn,tempCheckOut,getTimeAttend,confirmChk,getTime } from '../../services/api/attend';
 
+export const setStageToUpdateTimeMin = () => ({
+    type : SET_UPDATETIMEMIN
+});
+
+export const setStateGetCurrrentTime = (data) => ({
+    type : GET_CURRENTTIME,
+    payload : data
+})
 export const setStageToCancelCheck = () => ({
     type : ACTION_CANCELCHECK
 });
@@ -44,7 +54,7 @@ export const userCheck = (alreadyCheckIn,token,userId,divnId,camera) =>{
     return (dispatch)=>{
         dispatch(setStageToFetching());
         if(alreadyCheckIn){
-            checkOut(token,userId,divnId,camera).then(result=>{
+            tempCheckOut(token,userId,divnId,camera).then(result=>{
                 if(result.status)
                     dispatch(setStageToCheckOut(result))
             })
@@ -53,7 +63,7 @@ export const userCheck = (alreadyCheckIn,token,userId,divnId,camera) =>{
             })
         }
         else{
-            checkIn(token,userId,divnId,camera).then(result=>{
+            tempCheckIn(token,userId,divnId,camera).then(result=>{
                 if(result.status)
                     dispatch(setStageToCheckIn(result))
             })
@@ -77,12 +87,41 @@ export const switchLocation = () => {
     }
 }
 
-export const confirmCheck = (camera) =>{
+export const confirmCheck = (tempId,typeCheck,isInside,camera) =>{
+    
     camera.resumePreview();
     return (dispatch)=>{
-        getTimeAttend()
-        .then(rsTA => {
-            dispatch(setStateConfirmCheck({ logTA : rsTA}))
-        });          
+        dispatch(setStageToFetching());
+        confirmChk(tempId,typeCheck,isInside).then(result=>{
+            if(result){
+                getTimeAttend()
+                .then(rsTA => {
+                    dispatch(setStateConfirmCheck({ logTA : rsTA , rsConfirm : result}))
+                });
+            }
+        })
+        .catch(error=>{
+            dispatch(setStageToFailure())
+        })
+                 
+    }
+}
+
+export const getCurrentTime = () =>{
+    return (dispatch)=>{
+        dispatch(setStageToFetching());
+        getTime().then(result=>{
+            dispatch(setStateGetCurrrentTime(result))
+        })
+        .catch(error=>{
+            dispatch(setStageToFailure())
+        })
+                 
+    }
+}
+
+export const updateTimeMin = () => {
+    return (dispatch) => {
+        dispatch(setStageToUpdateTimeMin())
     }
 }

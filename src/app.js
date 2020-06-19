@@ -15,7 +15,7 @@ import {
   passwordChangeText,
   checkStillOnline
 } from './actions/user';
-import { userCheck, cancelCheck, switchLocation, confirmCheck } from './actions/attend';
+import { userCheck, cancelCheck, switchLocation, confirmCheck,updateTimeMin,getCurrentTime } from './actions/attend';
 import { getNews } from './actions/content';
 //import { captureScreen } from "react-native-view-shot";
 //import RNFS from 'react-native-fs';
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     width: '100%',
-    height: '16%'
+    height: '19%'
   }
 
 });
@@ -210,7 +210,7 @@ class App extends Component {
   toggleSwitch = () => { this.props.switchLocation() };
 
   renderIcon = icon => ({ isActive }) => (
-    <Icon size={20} color="#F5F5F5" name={icon} />
+    <Icon size={18} color="#F5F5F5" name={icon} />
   )
 
   renderTab = ({ tab, isActive }) => (
@@ -226,6 +226,14 @@ class App extends Component {
     this.props.checkStillOnline();
     this.setState({ activeTab: 'news' });
     //this.props.getNews();
+    this.props.getCurrentTime();
+    
+    //var curSec = this.props.fetchReducer.currentSecond
+    setInterval(() => {       
+       //this.props.updateTimeMin();
+       this.props.getCurrentTime();
+    }, 60000);
+    
   }
 
   Item({ title }) {
@@ -348,41 +356,51 @@ class App extends Component {
                   </View>
 
 
-                  <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View style={{ flex: 1.8, flexDirection: 'row', justifyContent: 'space-between'}}>
 
-                    <View style={{ flex: 1, width: '30%', height: '55%', marginTop: '2%', marginLeft: 10, justifyContent: 'flex-start', flexDirection: 'column' }}>
-                      <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '80%', paddingTop: '4%' }}>
+                    <View style={{ flex: 1, width: '30%', height: '100%', marginTop: '2%', marginLeft: 10, justifyContent: 'flex-start', flexDirection: 'column' }}>
+                      <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '100%', paddingTop: '4%' }}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                          <Icon style={{ flex: 1 }} size={25} color="#28A745" name={(this.props.fetchReducer.checkInLocation == "inside") ? 'office-building' : (this.props.fetchReducer.checkInLocation == "outside") ? 'home' : 'check'} />
-                          <Text style={{ flex: 2, fontSize: 20, color: '#28A745' }} >เข้า  </Text>
-                          <Text style={{ flex: 4, fontSize: 20, color: '#28A745' }} >{this.props.fetchReducer.checkInTime} น.</Text>
+                          <Icon style={{ flex: 2 }} size={25} color="#28A745" name={(this.props.fetchReducer.checkInLocation == "inside") ? 'office-building' : (this.props.fetchReducer.checkInLocation == "outside") ? 'home' : 'watch'} />
+                          <Text style={{ flex: 4, fontSize: 20, color: '#28A745' }} >เข้า  </Text>
+                          <Text style={{ flex: 6, fontSize: 20, color: '#28A745' }} >{this.props.fetchReducer.checkInTime} น.</Text>
                         </View>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                          <Icon style={{ flex: 1 }} size={25} color="#A34B62" name={(this.props.fetchReducer.checkOutLocation == "inside") ? 'office-building' : (this.props.fetchReducer.checkOutLocation == "outside") ? 'home' : 'check'} />
-                          <Text style={{ flex: 2, fontSize: 20, color: '#A34B62' }} >ออก </Text>
-                          <Text style={{ flex: 4, fontSize: 20, color: '#A34B62' }} >{this.props.fetchReducer.checkOutTime} น.</Text>
+                          <Icon style={{ flex: 2 }} size={25} color="#A34B62" name={(this.props.fetchReducer.checkOutLocation == "inside") ? 'office-building' : (this.props.fetchReducer.checkOutLocation == "outside") ? 'home' : 'watch'} />
+                          <Text style={{ flex: 4, fontSize: 20, color: '#A34B62' }} >ออก </Text>
+                          <Text style={{ flex: 6, fontSize: 20, color: '#A34B62' }} >{this.props.fetchReducer.checkOutTime} น.</Text>
+                        </View>
+                      </View>
+                    </View>
+                    <View style={{ flex: 1, width: '30%', height: '100%', marginTop: '2%', marginRight: 10,alignItems:'flex-end' ,justifyContent: 'flex-start', flexDirection: 'column' }}>
+                      <View style={{ flex: 1, flexDirection: 'column',alignItems:'flex-end', justifyContent: 'flex-start', width: '80%' }}>
+                      <View style={{ flex: 1, flexDirection: 'row' }}>
+                          <Text style={{ fontSize: 40, textAlign: 'right', color: 'white' }}>{this.props.fetchReducer.currentTime.substring(0, 5)} น.</Text>
+                        </View>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                          <Text style={{ fontSize: 20, textAlign: 'right', color: 'white' }}>5 มิ.ย.63 </Text>
                         </View>
                       </View>
                     </View>
 
-
+{/*
                     <View style={{ flex: 1, justifyContent: 'flex-start', flexDirection: 'column', alignItems: 'flex-end', width: '30%', height: '100%', marginTop: '2%', marginRight: '3%' }}>
-                      <View style={{ flex: 1, marginRight: '3%', flexDirection: 'column', justifyContent: 'flex-start', height: '50%' }}>
-                        <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
-                          <Text style={{ fontSize: 40, color: 'white', fontWeight: 'bold', alignItems: 'flex-start' }} >14:54 น.</Text>
+                      <View style={{ flex: 1, marginRight: '3%', flexDirection: 'column', justifyContent: 'flex-start', height: '100%' }}>
+                        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
+                          <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold', alignItems: 'flex-start' }} >{this.props.fetchReducer.currentTime.substring(0, 5)} น.</Text>
                         </View>
-                        <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-start', marginRight: '3%' }}>
+                        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-start', marginRight: '3%' }}>
                           <Text style={{ fontSize: 20, textAlign: 'right', color: 'white' }}>5 มิ.ย.63 </Text>
                         </View>
                       </View>
                       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', width: '100%', height: '50%', marginRight: '8%' }}>
-                        {/* ????? 
+                         ????? 
                       <Text style={{ fontSize: 15, color: 'yellow', fontWeight: 'bold',justifyContent:'flex-start', alignItems: 'flex-start' }} >
                         สวัสดีคุณธีระพล
                       </Text>
-                      */}
+                    
                       </View>
-                    </View>
+                    </View>  */}
 
                   </View>
                   <View style={{ flex: 5, justifyContent: 'flex-end', alignItems: 'center', width: '100%' }}>
@@ -392,25 +410,26 @@ class App extends Component {
                     <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                       {
                         this.props.fetchReducer.waitConfirm &&
-                        <Icon size={30} color="white" name="home" />
+                        <Icon size={30} color={(!this.props.fetchReducer.insideCheckConfirm) ? '#f5dd4b' : 'white'} name="home" />
                       }
                     </View>
                     <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center' }}>
                       {
                         this.props.fetchReducer.waitConfirm &&
                         <Switch
-                          trackColor={{ false: "#81b0ff", true: "#81b0ff" }}
-                          thumbColor={true ? "#f5dd4b" : "#f4f3f4"}
-                          ios_backgroundColor="#3e3e3e"
+                          trackColor={{ false: "white", true: "white" }}
+                          thumbColor={true ? "#f5dd4b" : "#f5dd4b"}
+                          ios_backgroundColor="#ffffff"
                           onValueChange={this.toggleSwitch}
                           value={this.props.fetchReducer.insideCheckConfirm}
+                          disabled={!this.props.fetchReducer.isEnableSwitchLocation}
                         />
                       }
                     </View>
                     <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                       {
                         this.props.fetchReducer.waitConfirm &&
-                        <Icon size={30} color="white" name="office-building" />
+                        <Icon size={30} color={(this.props.fetchReducer.insideCheckConfirm) ? '#f5dd4b' : 'white'}  name="office-building" />
                       }
                     </View>
 
@@ -424,10 +443,10 @@ class App extends Component {
 
 
                             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                              <Text style={{ flex: 1, fontSize: 18, color: '#FFFFFF' }} >{this.props.fetchReducer.typeCheckConfirm}</Text>
+                              <Text style={{ flex: 1, fontSize: 15, color: '#FFFFFF' }} >{(this.props.fetchReducer.typeCheckConfirm=="IN") ? 'เข้า' : 'ออก'}</Text>
                             </View>
                             <View style={{ flex: 2, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                              <Text style={{ flex: 1, fontSize: 18, color: '#FFFFFF' }} >{this.props.fetchReducer.timeCheckConfirm} น.</Text>
+                              <Text style={{ flex: 1, fontSize: 15, color: '#FFFFFF' }} >{this.props.fetchReducer.timeCheckConfirm} น.</Text>
                             </View>
                           </View>
                         }
@@ -448,7 +467,12 @@ class App extends Component {
                                   );
                                 }
                                 else
-                                  this.props.confirmCheck(this.camera);
+                                  this.props.confirmCheck(
+                                    this.props.fetchReducer.tempIdCheckConfirm,
+                                    this.props.fetchReducer.typeCheckConfirm,
+                                    this.props.fetchReducer.insideCheckConfirm,
+                                    this.camera
+                                  );
                               }
                             }
                             style={
@@ -476,7 +500,7 @@ class App extends Component {
                                 ]
                               }>
                               {/* <Icon size={30} color="#FFFFFF" name="close" /> */}
-                              <Text style={{ flex: 1, fontSize: 18, color: '#FFFFFF' }} >ยกเลิก</Text>
+                              <Text style={{ flex: 1, fontSize: 15, color: '#FFFFFF' }} >ยกเลิก</Text>
 
                             </TouchableOpacity>
                           </View>
@@ -493,7 +517,7 @@ class App extends Component {
           {
             this.props.fetchReducer.active && this.state.activeTab == "news" &&
             <View style={[stylesList.container, { backgroundColor: '#F2F3F4' }]}>
-              <View style={{ flex: 0.6, backgroundColor: 'white', marginBottom: '2%' }}>
+              <View style={{ flex: 1, backgroundColor: 'white', marginBottom: '2%' }}>
                 {/*  <SliderBox
               resizeMethod={'resize'}
               resizeMode={'stretch'}
@@ -603,13 +627,16 @@ class App extends Component {
 
           {
             this.props.fetchReducer.active &&
+           
+
             <BottomNavigation
               activeTab={this.state.activeTab}
               onTabPress={newTab => this.setState({ activeTab: newTab.key })}
               renderTab={this.renderTab}
               tabs={this.tabs}
-              style={{ height: '6%' }}
+              style={{ flex:0.1,height: '7%' }}
             />
+            
           }
         </View>
       </SafeAreaView>
@@ -633,8 +660,10 @@ const mapDispatchToProps = (dispatch) => ({
   userLogout: (token) => { dispatch(userLogout(token)) },
   cancelCheck: () => { dispatch(cancelCheck()) },
   switchLocation: () => { dispatch(switchLocation()) },
-  confirmCheck: (camera) => { dispatch(confirmCheck(camera)) },
-  getNews: () => { dispatch(getNews()) }
+  confirmCheck: (tempId,typeCheck,isInside,camera) => { dispatch(confirmCheck(tempId,typeCheck,isInside,camera)) },
+  getNews: () => { dispatch(getNews()) },
+  updateTimeMin : () => { dispatch(updateTimeMin())},
+  getCurrentTime : () => { dispatch(getCurrentTime())}
 });
 
 //export default App

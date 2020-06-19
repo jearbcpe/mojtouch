@@ -20,6 +20,11 @@ export const ACTION_GETNEWS = "ACTION_GETNEWS";
 export const SET_USERNAME = "SET_USERNAME";
 export const SET_PASSWORD = "SET_PASSWORD";
 
+
+export const GET_CURRENTTIME = "GET_CURRENTTIME";
+export const SET_UPDATETIMEMIN = "SET_UPDATETIMEMIN";
+
 export const URL_WS_USER = "https://portal.moj.go.th/ws/user.php/";
 export const URL_WS_ATTEND = "https://portal.moj.go.th/ws/attend.php/";
 export const URL_WS_NEWS = "http://intranet.moj.go.th/assets/jsonData/news.json";
+export const URL_WS_MASTER = "https://portal.moj.go.th/ws/master.php/";

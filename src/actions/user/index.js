@@ -125,14 +125,15 @@ export const checkStillOnline = () =>{
                     })
                     
                 });
-                
-                //dispatch(setStageToVerifyToken(result))
             }
-                
-
         })
         .catch(error=>{
             dispatch(setStageToFailure())
         })
     }
+}
+
+export const  setInterval = () => {
+
+
 }
