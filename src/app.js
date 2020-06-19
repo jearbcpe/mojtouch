@@ -22,7 +22,7 @@ import { getNews } from './actions/content';
 //import RNFetchBlob from 'react-native-fetch-blob';
 const stylesList = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 15,
     marginTop: 0,
   },
   item: {
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   cameraPreview: {
-    flex: 1,
+    flex: 15,
     overflow: 'hidden',
     height: '100%'
   },
@@ -573,7 +573,7 @@ class App extends Component {
 
                 </ScrollView>
               </View >
-              <View style={{ flex: 3, backgroundColor: '#FFFFFF', marginTop: '0.3%', paddingTop: 5, paddingHorizontal: 3 }}>
+              <View style={{ flex: 6, backgroundColor: '#FFFFFF', marginTop: '0.3%', paddingTop: 5, paddingHorizontal: 3 }}>
                 <View style={stylesList.item} >
                   <Text style={[stylesList.title, { fontWeight: 'bold' }]}>ข่าวประชาสัมพันธ์</Text>
                 </View>
@@ -617,12 +617,26 @@ class App extends Component {
 
           {
             this.props.fetchReducer.active && this.state.activeTab == "profile" &&
-            <View style={styles.container}>
-              <Text>ประวัติ</Text>
-              <View style={{ width: '80%', paddingTop: 20 }}>
+            <View style={[stylesList.container, { backgroundColor: '#F2F3F4' }]}>
+            <View style={{ flex: 1, backgroundColor: 'white', marginBottom: '2%' }}>
+
+              <View style={stylesList.item} >
+                <Text style={[stylesList.title, { fontWeight: 'bold' }]}>ระบบงาน</Text>
+              </View>
+              <ScrollView horizontal={true} style={[stylesLink.scrollViewLink]} showsHorizontalScrollIndicator={false}>
+             
+              </ScrollView>
+            </View >
+            <View style={{ flex: 6, backgroundColor: '#FFFFFF', marginTop: '0.3%', paddingTop: 5, paddingHorizontal: 3 }}>
+              <View style={stylesList.item} >
+                <Text style={[stylesList.title, { fontWeight: 'bold' }]}>ข่าวประชาสัมพันธ์</Text>
+              </View>
+              <View style={{ width: '100%',height:'100%', flexDirection:'column',justifyContent:'center',alignItems:'center' }}>
                 <Button onPress={() => this.props.userLogout(this.props.fetchReducer.token)} title={'Logout'} color="gray" />
               </View>
             </View>
+
+          </View>
           }
 
           {
@@ -634,7 +648,7 @@ class App extends Component {
               onTabPress={newTab => this.setState({ activeTab: newTab.key })}
               renderTab={this.renderTab}
               tabs={this.tabs}
-              style={{ flex:0.1,height: '7%' }}
+              style={{flex:1 }}
             />
             
           }
