@@ -233,7 +233,7 @@ class App extends Component {
     setInterval(() => {       
        //this.props.updateTimeMin();
        this.props.getCurrentTime();
-       console.log(this.props.fetchReducer.currentTime)
+       //console.log(this.props.fetchReducer.currentTime)
     }, 60000);
     
   }
