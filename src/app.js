@@ -229,6 +229,7 @@ class App extends Component {
     this.props.getCurrentTime();
     
     //var curSec = this.props.fetchReducer.currentSecond
+    
     setInterval(() => {       
        //this.props.updateTimeMin();
        this.props.getCurrentTime();
@@ -337,19 +338,22 @@ class App extends Component {
                     flex: 1, width: '100%', height: '100%', alignItems: 'center', paddingTop: '2%'
                   }}
                   type={RNCamera.Constants.Type.front}
-                  //flashMode={RNCamera.Constants.FlashMode.on}
                   pauseAfterCapture={true}
+                  captureAudio={false}
+                  //flashMode={RNCamera.Constants.FlashMode.on}
                   /*
                   androidCameraPermissionOptions={{
                     title: 'Permission to use camera',
                     message: 'We need your permission to use your camera',
                     buttonPositive: 'Ok',
                     buttonNegative: 'Cancel',
-                  }}*/
-                  captureAudio={false}
+                  }}
+                  
                   onGoogleVisionBarcodesDetected={({ barcodes }) => {
                     console.log(barcodes);
                   }}
+                  */
+                
                 >
                   <View style={styles.behind}>
                     <View style={{ flex: 1,backgroundColor: 'rgba(52, 52, 52, 0.1)' }}><Text style={{ flex: 2, fontSize: 20, color: '#28A745' }} ></Text></View>
