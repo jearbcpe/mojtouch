@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     width: '100%',
-    height: '19%'
+    height: '17%'
   }
 
 });
@@ -361,7 +361,7 @@ class App extends Component {
                   </View>
  
 
-                  <View style={{ flex: 1.8, flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <View style={{ flex: 1.5, flexDirection: 'row', justifyContent: 'space-between'}}>
 
                     <View style={{ flex: 1, width: '30%', height: '100%', marginTop: '2%', marginLeft: 10, justifyContent: 'flex-start', flexDirection: 'column' }}>
                       <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '100%', paddingTop: '4%' }}>
