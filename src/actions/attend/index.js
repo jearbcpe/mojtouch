@@ -115,8 +115,7 @@ export const getCurrentTime = () =>{
         })
         .catch(error=>{
             dispatch(setStageToFailure())
-        })
-                 
+        })     
     }
 }
 

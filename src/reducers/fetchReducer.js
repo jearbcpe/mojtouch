@@ -78,7 +78,8 @@ export default (state = initialState, {type,payload}) => {
             checkOutTime : payload.logTA.checkOutTime,
             checkInLocation : payload.logTA.checkInLocation,
             checkOutLocation : payload.logTA.checkOutLocation,
-            newsList : payload.rsContent
+            newsList : payload.rsContent,
+            currentTime : payload.rsTime.currentTime
         };
 
     case SET_USERNAME:
@@ -134,7 +135,8 @@ export default (state = initialState, {type,payload}) => {
             checkOutTime : payload.logTA.checkOutTime,
             checkInLocation : payload.logTA.checkInLocation,
             checkOutLocation : payload.logTA.checkOutLocation,
-            newsList : payload.rsContent
+            newsList : payload.rsContent,  
+            currentTime : payload.rsTime.currentTime
         }
     
     case ACTION_EXPIRETOKEN :
@@ -144,6 +146,7 @@ export default (state = initialState, {type,payload}) => {
         return { ...state , insideCheckConfirm : !state.insideCheckConfirm }
 
     case ACTION_LOGOUT:
+
         return { initialState }
 
     case ACTION_CANCELCHECK : 
