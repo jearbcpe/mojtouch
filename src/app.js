@@ -354,7 +354,7 @@ class App extends Component {
                   <View style={styles.behind}>
                     <View style={{ flex: 1,backgroundColor: 'rgba(52, 52, 52, 0.1)' }}><Text style={{ flex: 2, fontSize: 20, color: '#28A745' }} ></Text></View>
                   </View>
-
+ 
 
                   <View style={{ flex: 1.8, flexDirection: 'row', justifyContent: 'space-between'}}>
 
