@@ -611,6 +611,16 @@ class App extends Component {
                             uri: (item.newsImage != '') ? 'http://intranet.moj.go.th/' + item.newsImage : null,
                           }} />
                       </View>
+ {/*                      <View style={[stylesList.item, { flex: 1, flexDirection: 'column',justifyContent:'flex-start',alignItems:'center',borderBottomWidth:1,borderColor:'#E5E7E9'}]}>
+                          <View style={{flex:1,flexDirection:'row',width:'20%',height:'10%',justifyContent:'flex-start'}}>
+                              <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                                <Icon size={25} name="thumb-up-outline" color="#839192"></Icon>
+                              </View>
+                              <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                                <Text style={{fontSize:20,color:'#839192'}}>100</Text>
+                              </View>
+                          </View>
+                      </View> */}
                     </View>
                   }
                   keyExtractor={item => item.id}

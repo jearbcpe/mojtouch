@@ -10,8 +10,8 @@ export const getContentNews = () => {
         var arrNews = [];
        
         for(var x in data){
-            if(x==20)
-                break;
+            //if(x==20)
+              //  break;
             var widthMore = false;
 
             if(data[x].widthMore==true)
