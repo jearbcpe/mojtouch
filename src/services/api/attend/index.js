@@ -6,17 +6,18 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 
 export const tempCheckIn = async (token, userId, divnId, camera) => {
+ 
   if (camera) {
-    camera.pausePreview();
     const options = { quality: 0.5, base64: true };
     const data = await camera.takePictureAsync(options);
     const filepath = data.uri.split('//')[1];
     const imageUriBase64 = await RNFS.readFile(filepath, 'base64');
+    camera.pausePreview();
     return new Promise((resolve, reject) => {
       Geolocation.getCurrentPosition((info) => {
         var lat = info.coords.latitude;
         var long = info.coords.longitude;
-        
+     
         axios.post(URL_WS_ATTEND + "confirmCheckIn", 
           { 
             token: token,
@@ -35,6 +36,7 @@ export const tempCheckIn = async (token, userId, divnId, camera) => {
           .then(res => {
 
             var rs = res.data;
+            //console.log(rs.status)
             if (rs.status == "success") {
               var cktime = rs.datetime.split(' ')[1];
               var isInside = false;
