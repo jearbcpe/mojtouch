@@ -14,7 +14,9 @@ import { FETCHING_DATA,
     ACTION_SWITCHLOCATION,
     ACTION_GETNEWS,
     GET_CURRENTTIME,
-    SET_UPDATETIMEMIN
+    SET_UPDATETIMEMIN,
+    FETCHING_FINDLOCATION,
+    FETCHING_UPLOADCHECKIMAGE
 } from '../constants'
 
 const initialState = {
@@ -28,8 +30,6 @@ const initialState = {
     password : '',
     active : false,
     alreadyCheckIn : false,
-    isFetching: false,
-    isError: false,
     waitConfirm : false,
     timeCheckConfirm : '',
     typeCheckConfirm : '',
@@ -40,7 +40,11 @@ const initialState = {
     checkOutTime : '',
     checkInLocation : '',
     checkOutLocation : '',
-    newsList : []
+    newsList : [],
+    isFetching: false,
+    isError: false,
+    isFetchingLocation : false,
+    isFetchingUploadCheckImage : false
 }
 
 export default (state = initialState, {type,payload}) => {
@@ -54,6 +58,12 @@ export default (state = initialState, {type,payload}) => {
 
     case FETCHING_DATA_FAILURE:
         return { ...state, isFetching : false };
+    
+    case FETCHING_FINDLOCATION:
+        return { ...state, isFetchingLocation : true };
+
+    case FETCHING_UPLOADCHECKIMAGE:
+            return { ...state, isFetchingUploadCheckImage : true , isFetchingLocation : false };
 
     case GET_CURRENTTIME : 
         return { ...state , currentTime : payload.currentTime }
@@ -95,7 +105,8 @@ export default (state = initialState, {type,payload}) => {
                 typeCheckConfirm : 'IN',
                 insideCheckConfirm : payload.inside,
                 tempIdCheckConfirm : payload.tempId,
-                isEnableSwitchLocation : payload.inside
+                isEnableSwitchLocation : payload.inside,
+                isFetchingUploadCheckImage : false
             }
 
     case ACTION_CHECKOUT :
@@ -105,7 +116,8 @@ export default (state = initialState, {type,payload}) => {
                 typeCheckConfirm : 'OUT',
                 insideCheckConfirm : payload.inside,
                 tempIdCheckConfirm : payload.tempId,
-                isEnableSwitchLocation : payload.inside
+                isEnableSwitchLocation : payload.inside,
+                isFetchingUploadCheckImage : false
             }
 
     case ACTION_CONFIRMCHECK : 

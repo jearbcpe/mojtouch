@@ -419,6 +419,7 @@ class App extends Component {
                       }
                     </View>
                     <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center' }}>
+                     
                       {
                         this.props.fetchReducer.waitConfirm &&
                         <Switch
@@ -436,6 +437,7 @@ class App extends Component {
                         this.props.fetchReducer.waitConfirm &&
                         <Icon size={30} color={(this.props.fetchReducer.insideCheckConfirm) ? '#f5dd4b' : 'white'}  name="office-building" />
                       }
+                      
                     </View>
 
                   </View>
@@ -484,7 +486,18 @@ class App extends Component {
                               [styles.circleTakePhoto,
                               { justifyContent: 'center', alignItems: 'center' }
                               ]}>
-                            <Icon size={45} color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#8EBFBB'} name={(this.props.fetchReducer.waitConfirm ? 'check' : 'run')} />
+                              {
+                                this.props.fetchReducer.isFetchingLocation &&
+                                <Icon size={30} color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#8EBFBB'}  name="crosshairs-gps" />
+                              }
+                               {
+                                this.props.fetchReducer.isFetchingUploadCheckImage &&
+                                <Icon size={30} color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#8EBFBB'}  name="image-move" />
+                              }
+                              {
+                                !this.props.fetchReducer.isFetchingLocation && !this.props.fetchReducer.isFetchingUploadCheckImage &&
+                                <Icon size={45} color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#8EBFBB'} name={(this.props.fetchReducer.waitConfirm ? 'check' : 'run')} />
+                              }
 
                           </TouchableOpacity>
                         </View>
