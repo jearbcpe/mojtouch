@@ -215,9 +215,27 @@ export const getTime = () => {
   return new Promise((resolve, reject) => {
     axios.post(URL_WS_MASTER + 'getTime')
       .then(rsTime => {
-        var currentTime = rsTime.data.time;
-        //var currentSecond = rsTime.data.time.substring(6, 8);
+        var currentTime = rsTime.data.time.substring(0, 5);
+        var currentSecond = rsTime.data.time.substring(6, 8);
+        //console.log(currentSecond)
+        //if(parseInt(currentSecond)>30)
+        //  currentTime = increaseTimeMin(currentTime);
+        console.log('get time')
         return resolve({ currentTime: currentTime });
       })
   })
+}
+
+export const increaseTimeMin = (time) => {
+  var hour = parseInt(time.split(':')[0]);
+  var min = parseInt(time.split(':')[1]);
+      min = min + 1; 
+      if(min == 60){
+          min = 0;
+          hour = hour + 1;
+          if(hour == 24)
+              hour = 0;
+      }
+
+  return ('0' + hour).slice(-2) + ':' + ('0' + min).slice(-2);
 }

@@ -174,12 +174,12 @@ export default (state = initialState, {type,payload}) => {
 export const updateTimeMin = (time) => {
     var hour = parseInt(time.split(':')[0]);
     var min = parseInt(time.split(':')[1]);
-    var sec = parseInt(time.split(':')[2]);
+    //var sec = parseInt(time.split(':')[2]);
 
-    sec = sec + 1;
-    if(sec == 60)
-    {
-        sec = 0;
+    //sec = sec + 1;
+    //if(sec == 60)
+    //{
+    //    sec = 0;
         min = min + 1; 
         if(min == 60){
             min = 0;
@@ -187,7 +187,8 @@ export const updateTimeMin = (time) => {
             if(hour == 24)
                 hour = 0;
         }
-    }
+    //}
 
-    return ('0' + hour).slice(-2) + ':' + ('0' + min).slice(-2)+ ':' + ('0' + sec).slice(-2) ;
+    return ('0' + hour).slice(-2) + ':' + ('0' + min).slice(-2);
+    //+ ':' + ('0' + sec).slice(-2) ;
 }

@@ -62,6 +62,8 @@ export const setStageToFailure = () => ({
 
 export const userCheck = (alreadyCheckIn, token, userId, divnId, camera) => {
     return (dispatch) => {
+        //updateTimeMin();
+        getCurrentTime();
         dispatch(setStageToFindLocation());
         findLocation(camera).then(rsLocation => {
             dispatch(setStageToUploadCheckImage())
@@ -122,6 +124,7 @@ export const confirmCheck = (tempId, typeCheck, isInside, camera) => {
 
 export const getCurrentTime = () => {
     return (dispatch) => {
+       
         dispatch(setStageToFetching());
         getTime().then(result => {
             dispatch(setStateGetCurrrentTime(result))

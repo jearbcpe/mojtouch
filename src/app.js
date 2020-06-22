@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   SafeAreaView, Text, TextInput, View, Button,
-  StyleSheet, Image, TouchableOpacity, Switch, FlatList, ScrollView
+  StyleSheet, Image, TouchableOpacity, Switch, FlatList, ScrollView, AppState
 } from 'react-native';
 import BottomNavigation, { FullTab } from 'react-native-material-bottom-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -225,18 +225,21 @@ class App extends Component {
   UNSAFE_componentWillMount() {
     this.props.checkStillOnline();
     this.setState({ activeTab: 'news' });
-    //this.props.getNews();
-    this.props.getCurrentTime();
-    
-    //var curSec = this.props.fetchReducer.currentSecond
-    
+
     setInterval(() => {       
-       //this.props.updateTimeMin();
-       this.props.getCurrentTime();
-       //console.log(this.props.fetchReducer.currentTime)
+      if(this.state.activeTab == "attend"){
+        this.props.checkStillOnline();
+      }
     }, 60000);
-    
   }
+
+  //componentDidMount() {
+    //console.log(AppState.currentState + "zzz");  
+  //}
+
+  //componentWillUnmount() {
+    //console.log(AppState.currentState + "yyy");
+  //}
 
   Item({ title }) {
     return (
@@ -673,7 +676,10 @@ class App extends Component {
 
             <BottomNavigation
               activeTab={this.state.activeTab}
-              onTabPress={newTab => this.setState({ activeTab: newTab.key })}
+              onTabPress={newTab => { 
+                this.setState({ activeTab: newTab.key }); 
+                (newTab.key == "attend") ?  this.props.checkStillOnline() : '';
+              }}
               renderTab={this.renderTab}
               tabs={this.tabs}
               style={{flex:1 }}

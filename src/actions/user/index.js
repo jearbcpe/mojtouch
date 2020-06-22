@@ -112,7 +112,7 @@ export const checkStillOnline = () => {
 
     return (dispatch) => {
         //dispatch(setStageToFetching());
-
+        getTime();
         verifyToken()
             .then(rsToken => {
                 console.log(rsToken)
