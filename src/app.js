@@ -234,7 +234,7 @@ class App extends Component {
     this.props.checkStillOnline();
     this.setState({ activeTab: 'news' });
     setInterval(() => {       
-      if(this.state.activeTab == "attend"){
+      if(this.state.activeTab == "attend" && this.props.fetchReducer.active){
         if(!this.props.fetchReducer.waitConfirm)
           this.props.checkStillOnline();
       }
@@ -483,11 +483,11 @@ class App extends Component {
                         <View style={[styles.circleTakePhoto, (this.props.fetchReducer.waitConfirm) ? borderCheck.captureConfirm : (this.props.fetchReducer.alreadyCheckIn) ? borderCheck.captureCheckOut : borderCheck.captureCheckIn, { flexDirection: 'column', alignItems: 'center' }]}>
 
                           <TouchableOpacity
-                            disabled={(this.props.fetchReducer.isFetching) ? true : false }
+                           // disabled={(this.props.fetchReducer.isFetching) ? true : false }
                             onPress={
                               () => {
                                 //console.log(this.props.fetchReducer.isFetching)
-                                if(!this.props.fetchReducer.isFetching){
+                               // if(!this.props.fetchReducer.isFetching){
                                  
                                   if (!this.props.fetchReducer.waitConfirm) {
                                     this.props.userCheck(
@@ -505,7 +505,7 @@ class App extends Component {
                                       this.props.fetchReducer.insideCheckConfirm,
                                       this.camera
                                     );
-                                }
+                                //}
                                 
                               }
                             }
@@ -513,6 +513,10 @@ class App extends Component {
                               [styles.circleTakePhoto,
                               { justifyContent: 'center', alignItems: 'center' }
                               ]}>
+                              {
+                              //  this.props.fetchReducer.isFetching && !this.props.fetchReducer.isFetchingLocation && !this.props.fetchReducer.isFetchingUploadCheckImage &&
+                             //   <ActivityIndicator color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#8EBFBB'} size={25} />
+                              }
                               {
                                 this.props.fetchReducer.isFetchingLocation &&
                                 <Icon size={30} color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#8EBFBB'}  name="crosshairs-gps" />
@@ -522,7 +526,7 @@ class App extends Component {
                                 <Icon size={30} color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#8EBFBB'}  name="image-move" />
                               }
                               {
-                                !this.props.fetchReducer.isFetchingLocation && !this.props.fetchReducer.isFetchingUploadCheckImage &&
+                                !this.props.fetchReducer.isFetchingLocation && !this.props.fetchReducer.isFetchingUploadCheckImage && //!this.props.fetchReducer.isFetching &&
                                 <Icon size={45} color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#8EBFBB'} name={(this.props.fetchReducer.waitConfirm ? 'check' : 'run')} />
                               }
 
@@ -535,8 +539,8 @@ class App extends Component {
                           <View style={{ flexDirection: 'column', alignItems: 'center', marginRight: '20%', marginTop: '15%', width: '100%', height: '100%' }}>
 
                             <TouchableOpacity onPress={() => {
-                              this.props.cancelCheck();
-                              this.camera.resumePreview();
+                              this.props.cancelCheck(this.camera);
+                              
                             }}
                               style={
                                 [
@@ -727,7 +731,7 @@ class App extends Component {
               onTabPress={newTab => { 
                 if(!this.props.fetchReducer.waitConfirm && !this.props.fetchReducer.isFetching){
                   this.setState({ activeTab: newTab.key }); 
-                  (newTab.key == "attend") ?  this.props.checkStillOnline() : '';
+                  this.props.checkStillOnline();
                 }
               }}
               renderTab={this.renderTab}
@@ -756,7 +760,7 @@ const mapDispatchToProps = (dispatch) => ({
   userCheck: (alreadyCheckIn, token, userId, divnId, camera) => dispatch(userCheck(alreadyCheckIn, token, userId, divnId, camera)),
   checkStillOnline: () => dispatch(checkStillOnline()),
   userLogout: (token) => { dispatch(userLogout(token)) },
-  cancelCheck: () => { dispatch(cancelCheck()) },
+  cancelCheck: (camera) => { dispatch(cancelCheck(camera)) },
   switchLocation: () => { dispatch(switchLocation()) },
   confirmCheck: (tempId,typeCheck,isInside,camera) => { dispatch(confirmCheck(tempId,typeCheck,isInside,camera)) },
   getNews: () => { dispatch(getNews()) },

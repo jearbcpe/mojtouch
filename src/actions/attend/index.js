@@ -91,7 +91,8 @@ export const userCheck = (alreadyCheckIn, token, userId, divnId, camera) => {
 
 }
 
-export const cancelCheck = () => {
+export const cancelCheck = (camera) => {
+    camera.resumePreview();
     return (dispatch) => {
         dispatch(setStageToCancelCheck())
     }

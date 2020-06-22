@@ -63,7 +63,7 @@ export const userLogout = (token) => {
     return (dispatch) => {
 
         dispatch(setStageToFetching());
-        logout(setStageToExpireToken)
+        logout(token)
             .then(result => {
                 if (result)
                     dispatch(setStateToLogout())
@@ -116,8 +116,9 @@ export const checkStillOnline = () => {
         dispatch(setStageToFetching());
         verifyToken()
             .then(rsToken => {
+                console.log(rsToken)
                 if (!rsToken.active){
-                    dispatch(setStageToExpireToken())
+                    dispatch(setStateToLogout(''))
                 }
                 else if (rsToken.active) {
                    
