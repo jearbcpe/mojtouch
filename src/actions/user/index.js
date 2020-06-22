@@ -111,18 +111,21 @@ export const userLogin = (username, password) => {
 export const checkStillOnline = () => {
 
     return (dispatch) => {
-        //dispatch(setStageToFetching());
-        getTime();
+       
+        
+        dispatch(setStageToFetching());
         verifyToken()
             .then(rsToken => {
-                console.log(rsToken)
-                if (!rsToken.active)
+                if (!rsToken.active){
                     dispatch(setStageToExpireToken())
+                }
                 else if (rsToken.active) {
+                   
                     getTimeAttend()
                         .then(rsTA => {
                             getContentNews().then(rsContent => {
                                 getTime().then(rsTime => {
+                                   
                                     dispatch(setStageToVerifyToken({
                                         userData: rsToken, logTA: rsTA, rsContent: rsContent , rsTime : rsTime
                                     }))
@@ -143,9 +146,4 @@ export const checkStillOnline = () => {
                 dispatch(setStageToFailure())
             })
     }
-}
-
-export const setInterval = () => {
-
-
 }

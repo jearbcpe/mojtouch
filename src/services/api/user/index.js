@@ -21,18 +21,22 @@ export const verifyToken = () => {
     AsyncStorage.getItem('storeData').then((jsonValue) => {
       
       var stateData = JSON.parse(jsonValue)
+     
       if(stateData  != null){
+       
         var token = stateData.token;
       
         var userId = stateData.userId;
         var divnId = stateData.divnId;
+        var fullName = stateData.fullName;
+        var position = stateData.position;
         //const url_ws_user = "https://portal.moj.go.th/ws/user.php/verifyUser";
         //const url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkAlreadyCheckIn";
-    
+       
         axios.post(URL_WS_USER + "verifyToken", { token: token })
           .then(res => {
             var rs = res.data;
-              console.log(rs.status)
+            //console.log(rs.status)
             if (rs.status == "success") {
     
               axios.post(URL_WS_ATTEND + "checkAlreadyCheckIn", { token: token, userId: userId })
@@ -40,18 +44,18 @@ export const verifyToken = () => {
                   var rsChk = resChk.data;
                   var checked = false
                  
-                  storeData({ token: token, userId: userId, divnId: divnId }); //AsyncStorage for token
+                  storeData({ token: token, userId: userId, divnId: divnId,fullName:fullName,position:position }); //AsyncStorage for token
                   if (rsChk.status == "success") {
     
                     if (rsChk.checked == "1")
                       checked = true;
                     else if (rsChk.checked == "0")
                       checked = false;
-    
-                    return resolve({ token: token, userId: userId, divnId: divnId, active: true, alreadyCheckIn: checked });
+                    
+                    return resolve({ token: token, userId: userId, divnId: divnId,fullName:fullName,position:position, active: true, alreadyCheckIn: checked });
     
                   } else {
-                    return resolve({ token: token, userId: userId, divnId: divnId, active: true, alreadyCheckIn: false });
+                    return resolve({ token: token, userId: userId, divnId: divnId,fullName:fullName,position:position, active: true, alreadyCheckIn: false });
                   }
                 })
                 .catch(error => {
@@ -66,6 +70,8 @@ export const verifyToken = () => {
             console.error(error)
           })
       }
+      else
+        return resolve({ active: false });
 
     });
     
@@ -105,20 +111,20 @@ export const login = (username, password) => {
             .then(resChk => {
               var rsChk = resChk.data;
               var checked = false
-              storeData({ token: rs.token, userId: rs.userId, divnId: rs.d_id }); //AsyncStorage for token
+              storeData({ token: rs.token, userId: rs.userId, divnId: rs.d_id , fullName : rs.fullName , position : rs.position }); //AsyncStorage for token
               if (rsChk.status == "success") {
 
                 if (rsChk.checked == "1")
                   checked = true;
                 else if (rsChk.checked == "0")
                   checked = false;
-                storeData({ token: rs.token, userId: rs.userId, divnId: rs.d_id }); //AsyncStorage for token
-                var userData = [{ status: rs.status, token: rs.token, userId: rs.userId, divnId: rs.d_id, alreadyCheckIn: checked }];
+                //storeData({ token: rs.token, userId: rs.userId, divnId: rs.d_id , fullName : rs.fullName , position : rs.position }); //AsyncStorage for token
+                var userData = [{ status: rs.status, token: rs.token, userId: rs.userId, divnId: rs.d_id , fullName : rs.fullName , position : rs.position, alreadyCheckIn: checked }];
                 return resolve(userData);
 
               } else {
-                storeData({ token: rs.token, userId: rs.userId, divnId: rs.d_id }); //AsyncStorage for token
-                var userData = [{ status: rs.status, token: rs.token, userId: rs.userId, divnId: rs.d_id, alreadyCheckIn: false }];
+                //storeData({ token: rs.token, userId: rs.userId, divnId: rs.d_id , fullName : rs.fullName , position : rs.position }); //AsyncStorage for token
+                var userData = [{ status: rs.status, token: rs.token, userId: rs.userId, divnId: rs.d_id , fullName : rs.fullName , position : rs.position , alreadyCheckIn: false }];
                 return resolve(userData);
               }
             })

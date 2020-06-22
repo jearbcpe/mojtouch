@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   SafeAreaView, Text, TextInput, View, Button,
-  StyleSheet, Image, TouchableOpacity, Switch, FlatList, ScrollView, AppState
+  StyleSheet, Image, TouchableOpacity, Switch, FlatList, ScrollView, ActivityIndicator
 } from 'react-native';
 import BottomNavigation, { FullTab } from 'react-native-material-bottom-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -79,6 +79,14 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     marginBottom: 10
+  },
+  ImageProfile: {
+    width: 150,
+    height: 150,
+    marginBottom: 10,
+    borderRadius: 75,
+    borderWidth:3,
+    //borderColor:'#0364A7'
   },
   Button: {
     borderWidth: 1,
@@ -163,7 +171,7 @@ const borderCheck = StyleSheet.create({
   captureConfirm: {
     borderColor: 'white',
     borderWidth: 2,
-    backgroundColor: '#0364A7',
+    backgroundColor: '#0364A7',//blue
     width: 68,
     height: 68,
     borderRadius: 68 / 2,
@@ -210,7 +218,7 @@ class App extends Component {
   toggleSwitch = () => { this.props.switchLocation() };
 
   renderIcon = icon => ({ isActive }) => (
-    <Icon size={18} color="#F5F5F5" name={icon} />
+    <Icon size={20} color="#F5F5F5" name={icon} />
   )
 
   renderTab = ({ tab, isActive }) => (
@@ -225,12 +233,12 @@ class App extends Component {
   UNSAFE_componentWillMount() {
     this.props.checkStillOnline();
     this.setState({ activeTab: 'news' });
-
     setInterval(() => {       
       if(this.state.activeTab == "attend"){
-        this.props.checkStillOnline();
+        if(!this.props.fetchReducer.waitConfirm)
+          this.props.checkStillOnline();
       }
-    }, 60000);
+    }, 30000);
   }
 
   //componentDidMount() {
@@ -266,16 +274,20 @@ class App extends Component {
                   uri: 'https://intranet.moj.go.th/assets/img/moj_logo.png',
                 }} />
               <Text style={[styles.Text, { fontSize: 16, paddingBottom: 15 }]}>MOJ TOUCH</Text>
+              {!this.props.fetchReducer.isFetching &&
               <TextInput style={styles.TextInput}
                 placeholder={'Username'} placeholderTextColor="#A34B62"
                 onChangeText={(username) => this.props.setUsername(username)}
               />
+              }
+              {!this.props.fetchReducer.isFetching &&
               <TextInput
                 secureTextEntry={true}
                 style={styles.TextInput}
                 placeholder={'Password'} placeholderTextColor="#A34B62"
                 onChangeText={(username) => this.props.setPassword(username)}
               />
+              }
               {/*  <View style={{ width: '80%', paddingTop: 15 }}>
               <Button onPress={() => {
                 this.props.userLogin(this.props.fetchReducer.username, this.props.fetchReducer.password);
@@ -283,6 +295,7 @@ class App extends Component {
               }
               } title={'Login'} color="#0365A7" />
             </View> */}
+               {!this.props.fetchReducer.isFetching &&
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
@@ -301,6 +314,8 @@ class App extends Component {
               >
                 <Text style={{ color: 'white', fontSize: 13 }}>LOGIN</Text>
               </TouchableOpacity>
+  }
+     {!this.props.fetchReducer.isFetching &&
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
@@ -315,9 +330,12 @@ class App extends Component {
               >
                 <Text style={{ color: 'white', fontSize: 13 }}>ENROLL</Text>
               </TouchableOpacity>
-              {/*  <View style={{ width: '80%', paddingTop: 20 }}>
-              <Button onPress={() => this.props.userLogin(this.props.fetchReducer.username, this.props.fetchReducer.password)} title={'Enroll'} color="#A34B62" />
-            </View> */}
+              }
+              {
+                this.props.fetchReducer.isFetching &&
+               <ActivityIndicator color="#0365A7" size={25} />
+              }
+             
 
 
             </View>
@@ -465,24 +483,30 @@ class App extends Component {
                         <View style={[styles.circleTakePhoto, (this.props.fetchReducer.waitConfirm) ? borderCheck.captureConfirm : (this.props.fetchReducer.alreadyCheckIn) ? borderCheck.captureCheckOut : borderCheck.captureCheckIn, { flexDirection: 'column', alignItems: 'center' }]}>
 
                           <TouchableOpacity
+                            disabled={(this.props.fetchReducer.isFetching) ? true : false }
                             onPress={
                               () => {
-                                if (!this.props.fetchReducer.waitConfirm) {
-                                  this.props.userCheck(
-                                    this.props.fetchReducer.alreadyCheckIn,
-                                    this.props.fetchReducer.token,
-                                    this.props.fetchReducer.userId,
-                                    this.props.fetchReducer.divnId,
-                                    this.camera
-                                  );
+                                //console.log(this.props.fetchReducer.isFetching)
+                                if(!this.props.fetchReducer.isFetching){
+                                 
+                                  if (!this.props.fetchReducer.waitConfirm) {
+                                    this.props.userCheck(
+                                      this.props.fetchReducer.alreadyCheckIn,
+                                      this.props.fetchReducer.token,
+                                      this.props.fetchReducer.userId,
+                                      this.props.fetchReducer.divnId,
+                                      this.camera
+                                    );
+                                  }
+                                  else
+                                    this.props.confirmCheck(
+                                      this.props.fetchReducer.tempIdCheckConfirm,
+                                      this.props.fetchReducer.typeCheckConfirm,
+                                      this.props.fetchReducer.insideCheckConfirm,
+                                      this.camera
+                                    );
                                 }
-                                else
-                                  this.props.confirmCheck(
-                                    this.props.fetchReducer.tempIdCheckConfirm,
-                                    this.props.fetchReducer.typeCheckConfirm,
-                                    this.props.fetchReducer.insideCheckConfirm,
-                                    this.camera
-                                  );
+                                
                               }
                             }
                             style={
@@ -649,7 +673,7 @@ class App extends Component {
           {
             this.props.fetchReducer.active && this.state.activeTab == "profile" &&
             <View style={[stylesList.container, { backgroundColor: '#F2F3F4' }]}>
-            <View style={{ flex: 1, backgroundColor: 'white', marginBottom: '2%' }}>
+{/*             <View style={{ flex: 1, backgroundColor: 'white', marginBottom: '2%' }}>
 
               <View style={stylesList.item} >
                 <Text style={[stylesList.title, { fontWeight: 'bold' }]}>ระบบงาน</Text>
@@ -657,13 +681,37 @@ class App extends Component {
               <ScrollView horizontal={true} style={[stylesLink.scrollViewLink]} showsHorizontalScrollIndicator={false}>
              
               </ScrollView>
-            </View >
+            </View > */}
             <View style={{ flex: 6, backgroundColor: '#FFFFFF', marginTop: '0.3%', paddingTop: 5, paddingHorizontal: 3 }}>
               <View style={stylesList.item} >
-                <Text style={[stylesList.title, { fontWeight: 'bold' }]}>ข่าวประชาสัมพันธ์</Text>
+                {/* <Text style={[stylesList.title, { fontWeight: 'bold' }]}>ข้อมูลผู้ใช้งาน</Text> */}
               </View>
               <View style={{ width: '100%',height:'100%', flexDirection:'column',justifyContent:'center',alignItems:'center' }}>
-                <Button onPress={() => this.props.userLogout(this.props.fetchReducer.token)} title={'Logout'} color="gray" />
+              <Image style={styles.ImageProfile}
+                source={{
+                  uri: 'https://intranet.moj.go.th/assets/img/avatar04.png',
+                }} />
+                <View style={stylesList.item} >
+              <Text style={[{ fontWeight: 'bold',fontSize : 20 ,color:'#4D5656' }]}>{this.props.fetchReducer.fullName}</Text>
+                </View>
+                <View style={stylesList.item} >
+                  <Text style={[stylesList.title, { fontWeight: 'bold',fontSize : 20 ,color:'#4D5656' }]}>{this.props.fetchReducer.position}</Text>
+                </View>
+                
+                <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  width: '50%', height: '4%',
+                  justifyContent: 'center',
+                  backgroundColor: '#A34B62',
+                  borderRadius: 3,
+                  alignItems: 'center',
+                  marginTop: '3%'
+                }}
+                onPress={() => this.props.userLogout(this.props.fetchReducer.token)}
+              >
+              <Text style={{ color: 'white', fontSize: 13 }}>LOGOUT</Text>
+              </TouchableOpacity>
               </View>
             </View>
 
@@ -677,8 +725,10 @@ class App extends Component {
             <BottomNavigation
               activeTab={this.state.activeTab}
               onTabPress={newTab => { 
-                this.setState({ activeTab: newTab.key }); 
-                (newTab.key == "attend") ?  this.props.checkStillOnline() : '';
+                if(!this.props.fetchReducer.waitConfirm && !this.props.fetchReducer.isFetching){
+                  this.setState({ activeTab: newTab.key }); 
+                  (newTab.key == "attend") ?  this.props.checkStillOnline() : '';
+                }
               }}
               renderTab={this.renderTab}
               tabs={this.tabs}

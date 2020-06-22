@@ -220,7 +220,7 @@ export const getTime = () => {
         //console.log(currentSecond)
         //if(parseInt(currentSecond)>30)
         //  currentTime = increaseTimeMin(currentTime);
-        console.log('get time')
+        //console.log('get time')
         return resolve({ currentTime: currentTime });
       })
   })

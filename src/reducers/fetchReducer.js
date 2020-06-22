@@ -28,6 +28,8 @@ const initialState = {
     divnId : '',
     username : '',
     password : '',
+    fullName : '',
+    position : '',
     active : false,
     alreadyCheckIn : false,
     waitConfirm : false,
@@ -81,6 +83,8 @@ export default (state = initialState, {type,payload}) => {
             alreadyCheckIn : payload.userData[0].alreadyCheckIn,
             username : '',
             password : '',
+            fullName : payload.userData[0].fullName,
+            position : payload.userData[0].position,
             isFetching: false,
             isError: false,
             waitConfirm : false,
@@ -106,7 +110,8 @@ export default (state = initialState, {type,payload}) => {
                 insideCheckConfirm : payload.inside,
                 tempIdCheckConfirm : payload.tempId,
                 isEnableSwitchLocation : payload.inside,
-                isFetchingUploadCheckImage : false
+                isFetchingUploadCheckImage : false,
+                isFetching : false
             }
 
     case ACTION_CHECKOUT :
@@ -117,7 +122,8 @@ export default (state = initialState, {type,payload}) => {
                 insideCheckConfirm : payload.inside,
                 tempIdCheckConfirm : payload.tempId,
                 isEnableSwitchLocation : payload.inside,
-                isFetchingUploadCheckImage : false
+                isFetchingUploadCheckImage : false,
+                isFetching : false
             }
 
     case ACTION_CONFIRMCHECK : 
@@ -132,7 +138,8 @@ export default (state = initialState, {type,payload}) => {
                 checkOutTime : payload.logTA.checkOutTime,
                 checkInLocation : payload.logTA.checkInLocation,
                 checkOutLocation : payload.logTA.checkOutLocation,
-                isEnableSwitchLocation : false
+                isEnableSwitchLocation : false,
+                isFetching : false
             }
 
     case ACTION_VERIFYTOKEN :
@@ -141,6 +148,8 @@ export default (state = initialState, {type,payload}) => {
             userId : payload.userData.userId ,
             divnId : payload.userData.divnId ,
             active : true ,
+            fullName : payload.userData.fullName,
+            position : payload.userData.position,
             alreadyCheckIn : payload.userData.alreadyCheckIn,
             waitConfirm : false,
             checkInTime : payload.logTA.checkInTime,
@@ -148,7 +157,8 @@ export default (state = initialState, {type,payload}) => {
             checkInLocation : payload.logTA.checkInLocation,
             checkOutLocation : payload.logTA.checkOutLocation,
             newsList : payload.rsContent,  
-            currentTime : payload.rsTime.currentTime
+            currentTime : payload.rsTime.currentTime,
+            isFetching : false
         }
     
     case ACTION_EXPIRETOKEN :
@@ -165,7 +175,7 @@ export default (state = initialState, {type,payload}) => {
         return {...state , waitConfirm:false}
 
     case ACTION_GETNEWS :
-        return {...state , newsList : payload}
+        return {...state , newsList : payload , isFetching : false}
     default:
         return state
     }
