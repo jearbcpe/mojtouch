@@ -216,12 +216,12 @@ export const getTime = () => {
     axios.post(URL_WS_MASTER + 'getTime')
       .then(rsTime => {
         var currentTime = rsTime.data.time.substring(0, 5);
-        var currentSecond = rsTime.data.time.substring(6, 8);
-        //console.log(currentSecond)
-        //if(parseInt(currentSecond)>30)
-        //  currentTime = increaseTimeMin(currentTime);
-        //console.log('get time')
-        return resolve({ currentTime: currentTime });
+        var arrDate = rsTime.data.date.split('-');
+        var yearThai = parseInt(arrDate[0]) + 543;
+        var month = numToNameMonth(arrDate[1]);
+        var date = arrDate[2]
+        
+        return resolve({ currentTime: currentTime , currentDate : date + ' ' + month + ' ' + yearThai });
       })
   })
 }
@@ -238,4 +238,34 @@ export const increaseTimeMin = (time) => {
       }
 
   return ('0' + hour).slice(-2) + ':' + ('0' + min).slice(-2);
+}
+
+export const numToNameMonth = (nMonth) => {
+  var month = "";
+  if (nMonth == "01" || nMonth == "1")
+      month = "ม.ค.";
+  else if (nMonth == "02" || nMonth == "2")
+      month = "ก.พ.";
+  else if (nMonth == "03" || nMonth == "3")
+      month = "มี.ค.";
+  else if (nMonth == "04" || nMonth == "4")
+      month = "เม.ย.";
+  else if (nMonth == "05" || nMonth == "5")
+      month = "พ.ค.";
+  else if (nMonth == "06" || nMonth == "6")
+      month = "มิ.ย.";
+  else if (nMonth == "07" || nMonth == "7")
+      month = "ก.ค.";
+  else if (nMonth == "08" || nMonth == "8")
+      month = "ส.ค.";
+  else if (nMonth == "09" || nMonth == "9")
+      month = "ก.ย.";
+  else if (nMonth == "10" || nMonth == "10")
+      month = "ต.ค.";
+  else if (nMonth == "11" || nMonth == "11")
+      month = "พ.ย.";
+  else if (nMonth == "12" || nMonth == "12")
+      month = "ธ.ค.";
+
+  return month;
 }

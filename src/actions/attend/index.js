@@ -63,7 +63,7 @@ export const setStageToFailure = () => ({
 export const userCheck = (alreadyCheckIn, token, userId, divnId, camera) => {
     return (dispatch) => {
         //updateTimeMin();
-        getTime();
+        getCurrentTime();
         dispatch(setStageToFetching());
         dispatch(setStageToFindLocation());
         findLocation(camera).then(rsLocation => {

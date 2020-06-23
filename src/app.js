@@ -404,7 +404,7 @@ class App extends Component {
                           <Text style={{ fontSize: 40, textAlign: 'right', color: 'white' }}>{this.props.fetchReducer.currentTime.substring(0, 5)} น.</Text>
                         </View>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                          <Text style={{ fontSize: 20, textAlign: 'right', color: 'white' }}>5 มิ.ย.63 </Text>
+                          <Text style={{ fontSize: 20, textAlign: 'right', color: 'white' }}>{this.props.fetchReducer.currentDate} </Text>
                         </View>
                       </View>
                     </View>

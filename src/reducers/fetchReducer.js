@@ -23,6 +23,7 @@ import {
 const initialState = {
     data: [],
     currentTime: '',
+    currentDate : '',
     currentSecond: 0,
     token: '',
     userId: '',
@@ -69,7 +70,7 @@ export default (state = initialState, { type, payload }) => {
             return { ...state, isFetchingUploadCheckImage: true, isFetchingLocation: false };
 
         case GET_CURRENTTIME:
-            return { ...state, currentTime: payload.currentTime }
+            return { ...state, currentTime: payload.currentTime , currentDate : payload.currentDate }
 
         case SET_UPDATETIMEMIN:
             return { ...state, currentTime: updateTimeMin(state.currentTime), currentSecond: 0 }
@@ -94,7 +95,8 @@ export default (state = initialState, { type, payload }) => {
                 checkInLocation: payload.logTA.checkInLocation,
                 checkOutLocation: payload.logTA.checkOutLocation,
                 newsList: payload.rsContent,
-                currentTime: payload.rsTime.currentTime
+                currentTime: payload.rsTime.currentTime,
+                currentDate : payload.currentDate
             };
 
         case SET_USERNAME:
@@ -163,6 +165,7 @@ export default (state = initialState, { type, payload }) => {
                 checkOutLocation: payload.logTA.checkOutLocation,
                 newsList: payload.rsContent,
                 currentTime: payload.rsTime.currentTime,
+                urrentDate : payload.currentDate,
                 isFetching: false
             }
 
