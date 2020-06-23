@@ -116,7 +116,7 @@ export const checkStillOnline = () => {
         dispatch(setStageToFetching());
         verifyToken()
             .then(rsToken => {
-                console.log(rsToken)
+                //console.log(rsToken)
                 if (!rsToken.active){
                     dispatch(setStateToLogout(''))
                 }

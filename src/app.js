@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  SafeAreaView, Text, TextInput, View, Button,
+  SafeAreaView, Text, TextInput, View,Linking,
   StyleSheet, Image, TouchableOpacity, Switch, FlatList, ScrollView, ActivityIndicator
 } from 'react-native';
 import BottomNavigation, { FullTab } from 'react-native-material-bottom-navigation';
@@ -22,7 +22,7 @@ import { getNews } from './actions/content';
 //import RNFetchBlob from 'react-native-fetch-blob';
 const stylesList = StyleSheet.create({
   container: {
-    flex: 15,
+    flex: 13,
     marginTop: 0,
   },
   item: {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 10,
     borderRadius: 75,
-    borderWidth:3,
+    //borderWidth:3,
     //borderColor:'#0364A7'
   },
   Button: {
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   cameraPreview: {
-    flex: 15,
+    flex: 13,
     overflow: 'hidden',
     height: '100%'
   },
@@ -134,7 +134,7 @@ const styleImageView = StyleSheet.create({
   },
   heightMore: {
     width: '100%',
-    height: 550
+    height: 500
   }
 });
 
@@ -143,7 +143,7 @@ const stylesLink = StyleSheet.create({
     flex: 1,
   },
   txtName: {
-    fontSize: 13
+    fontSize: 10
   }
 });
 
@@ -191,14 +191,14 @@ class App extends Component {
   tabs = [
     {
       key: 'news',
-      icon: 'book',
-      label: 'ประชาสัมพันธ์',
+      icon: 'home',
+      label: 'หน้าแรก',
       barColor: '#A34B62',
       pressColor: 'rgba(245, 245, 245, 0.16)'
     },
     {
       key: 'attend',
-      icon: 'run',
+      icon: 'clock',
       label: 'ลงเวลา',
       barColor: '#0364A7',
       pressColor: 'rgba(245, 245, 245, 0.16)'
@@ -209,7 +209,7 @@ class App extends Component {
       label: 'ประวัติ',
       barColor: '#8EBFBB',
       pressColor: 'rgba(245, 245, 245, 0.16)'
-    },
+    }
   ]
 
 
@@ -218,16 +218,28 @@ class App extends Component {
   toggleSwitch = () => { this.props.switchLocation() };
 
   renderIcon = icon => ({ isActive }) => (
-    <Icon size={20} color="#F5F5F5" name={icon} />
+    (isActive) ? <Icon size={20} color="black" name={icon} /> : <Icon size={20} color="#F5F5F5" name={icon} />
+
   )
 
   renderTab = ({ tab, isActive }) => (
+    (isActive) ? 
     <FullTab
       isActive={isActive}
       key={tab.key}
       label={tab.label}
       renderIcon={this.renderIcon(tab.icon)}
+      labelStyle={{ color: 'black',fontSize:11 }}
     />
+    :
+    <FullTab
+    isActive={isActive}
+    key={tab.key}
+    label={tab.label}
+    renderIcon={this.renderIcon(tab.icon)}
+    labelStyle={{ color: '#F5F5F5',fontSize:11 }}
+  />
+
   )
 
   UNSAFE_componentWillMount() {
@@ -583,40 +595,77 @@ class App extends Component {
                   <Text style={[stylesList.title, { fontWeight: 'bold' }]}>ระบบงาน</Text>
                 </View>
                 <ScrollView horizontal={true} style={[stylesLink.scrollViewLink]} showsHorizontalScrollIndicator={false}>
-                  <View style={{ flex: 1.5, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', paddingBottom: '1%' }}>
-                    <View style={{ flex: 1, width: 100, height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
+                  <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', paddingBottom: '1%' }}>
+                  <TouchableOpacity style={{ flex: 1, width: 80, height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}
+                    onPress={ ()=>{ Linking.openURL('https://intranet.moj.go.th')}}
+                    >
                       <View style={{ flex: 1 }}>
-                        <Icon size={28} color="red" name="text" />
+                        <Icon size={20} color="#2ECC71" name="blur" />
                       </View>
-                      <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+                      <View style={{ flex: 1, justifyContent: 'flex-start',marginTop:2 }}>
+                        <Text style={stylesLink.txtName}>intranet</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flex: 1, width: 80, height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}
+                    onPress={ ()=>{ Linking.openURL('https://saraban.moj.go.th')}}
+                    >
+                      <View style={{ flex: 1 }}>
+                        <Icon size={20} color="red" name="text" />
+                      </View>
+                      <View style={{ flex: 1, justifyContent: 'flex-start',marginTop:2  }}>
                         <Text style={stylesLink.txtName}>e-doc</Text>
                       </View>
-                    </View>
-                    <View style={{ flex: 1, width: 100, height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flex: 1, width: 80, height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}
+                    onPress={ ()=>{ Linking.openURL('http://dpis.moj.go.th:88/')}}
+                    >
                       <View style={{ flex: 1 }}>
-                        <Icon size={28} color="#8EBFBB" name="account" />
+                        <Icon size={20} color="#8EBFBB" name="account" />
                       </View>
-                      <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+                      <View style={{ flex: 1, justifyContent: 'flex-start',marginTop:2  }}>
                         <Text style={stylesLink.txtName}>dpis</Text>
                       </View>
-                    </View>
-                    <View style={{ flex: 1, width: 100, height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flex: 1, width: 80, height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}
+                    onPress={ ()=>{ Linking.openURL('https://car.moj.go.th/login')}}
+                    >
                       <View style={{ flex: 1 }}>
-                        <Icon size={28} color="#0364A7" name="car" />
+                        <Icon size={20} color="#0364A7" name="car" />
                       </View>
-                      <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+                      <View style={{ flex: 1, justifyContent: 'flex-start',marginTop:2  }}>
                         <Text style={stylesLink.txtName}>จองรถ</Text>
                       </View>
-                    </View>
-                    <View style={{ flex: 1, width: 100, height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flex: 1, width: 80, height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}
+                    onPress={ ()=>{ Linking.openURL('http://register.moj.go.th/')}}
+                    >
                       <View style={{ flex: 1 }}>
-                        <Icon size={28} color="#f5dd4b" name="pencil" />
+                        <Icon size={20} color="#f5dd4b" name="pencil" />
                       </View>
-                      <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+                      <View style={{ flex: 1, justifyContent: 'flex-start',marginTop:2  }}>
                         <Text style={stylesLink.txtName}>ลงทะเบียน</Text>
                       </View>
-                    </View>
-
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flex: 1, width: 80, height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}
+                    onPress={ ()=>{ Linking.openURL('http://mrbs.moj.go.th/')}}
+                    >
+                      <View style={{ flex: 1 }}>
+                        <Icon size={20} color="#AF7AC5" name="google-classroom" />
+                      </View>
+                      <View style={{ flex: 1, justifyContent: 'flex-start' ,marginTop:2 }}>
+                        <Text style={stylesLink.txtName}>ห้องประชุม</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flex: 1, width: 80, height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}
+                    onPress={ ()=>{ Linking.openURL('http://payrollslip.moj.go.th/')}}
+                    >
+                      <View style={{ flex: 1 }}>
+                        <Icon size={20} color="#D35400" name="archive" />
+                      </View>
+                      <View style={{ flex: 1, justifyContent: 'flex-start',marginTop:2  }}>
+                        <Text style={stylesLink.txtName}>slip</Text>
+                      </View>
+                    </TouchableOpacity>
                   </View>
 
 
@@ -693,7 +742,14 @@ class App extends Component {
               <View style={{ width: '100%',height:'100%', flexDirection:'column',justifyContent:'center',alignItems:'center' }}>
               <Image style={styles.ImageProfile}
                 source={{
-                  uri: 'https://intranet.moj.go.th/assets/img/avatar04.png',
+                  uri: (this.props.fetchReducer.fullName.match(/นาย.*/)) ?
+                         'https://intranet.moj.go.th/assets/img/avatar04.png'
+                        : (this.props.fetchReducer.fullName.match(/นางสาว.*/) ? 
+                         'https://intranet.moj.go.th/assets/img/avatar2.png' 
+                        : (this.props.fetchReducer.fullName.match(/นาง.*/)) ?
+                         'https://intranet.moj.go.th/assets/img/avatar3.png' 
+                        :'https://intranet.moj.go.th/assets/img/avatar5.png'
+                        )
                 }} />
                 <View style={stylesList.item} >
               <Text style={[{ fontWeight: 'bold',fontSize : 20 ,color:'#4D5656' }]}>{this.props.fetchReducer.fullName}</Text>
@@ -707,7 +763,7 @@ class App extends Component {
                   flexDirection: 'row',
                   width: '50%', height: '4%',
                   justifyContent: 'center',
-                  backgroundColor: '#A34B62',
+                  backgroundColor: 'gray',
                   borderRadius: 3,
                   alignItems: 'center',
                   marginTop: '3%'
@@ -728,6 +784,7 @@ class App extends Component {
 
             <BottomNavigation
               activeTab={this.state.activeTab}
+              
               onTabPress={newTab => { 
                 if(!this.props.fetchReducer.waitConfirm && !this.props.fetchReducer.isFetching){
                   this.setState({ activeTab: newTab.key }); 
@@ -736,7 +793,7 @@ class App extends Component {
               }}
               renderTab={this.renderTab}
               tabs={this.tabs}
-              style={{flex:1 }}
+              style={{flex:1}}
             />
             
           }
