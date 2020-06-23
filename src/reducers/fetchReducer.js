@@ -96,7 +96,7 @@ export default (state = initialState, { type, payload }) => {
                 checkOutLocation: payload.logTA.checkOutLocation,
                 newsList: payload.rsContent,
                 currentTime: payload.rsTime.currentTime,
-                currentDate : payload.currentDate
+                currentDate : payload.rsTime.currentDate
             };
 
         case SET_USERNAME:
@@ -165,7 +165,7 @@ export default (state = initialState, { type, payload }) => {
                 checkOutLocation: payload.logTA.checkOutLocation,
                 newsList: payload.rsContent,
                 currentTime: payload.rsTime.currentTime,
-                urrentDate : payload.currentDate,
+                currentDate : payload.rsTime.currentDate,
                 isFetching: false
             }
 
