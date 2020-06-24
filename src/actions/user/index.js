@@ -5,12 +5,16 @@ import {
     SET_USERNAME,
     SET_PASSWORD,
     ACTION_VERIFYTOKEN,
-    ACTION_LOGOUT
+    ACTION_LOGOUT,
+    ACTION_LOGINFAIL
 } from '../../constants'
 import { login, logout, verifyToken } from '../../services/api/user'
 import { getTimeAttend, getTime } from '../../services/api/attend'
 import { getContentNews } from '../../services/api/content';
 
+export const setStageToLoginFail = () => ({
+    type : ACTION_LOGINFAIL
+})
 export const setStageToUsername = (data) => ({
     type: SET_USERNAME,
     payload: data
@@ -81,8 +85,8 @@ export const userLogin = (username, password) => {
         login(username, password)
             .then(rsUser => {
                 //dispatch(setStageToLogin(rsUser))
-
-                getTimeAttend()
+                if(rsUser){
+                    getTimeAttend()
                     .then(rsTA => {
                         getContentNews().then(rsContent => {
                             getTime().then(rsTime => {
@@ -100,6 +104,11 @@ export const userLogin = (username, password) => {
                             })
 
                     });
+                }
+                else{
+                    dispatch(setStageToLoginFail())
+                }
+ 
 
             })
             .catch(error => {

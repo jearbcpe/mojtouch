@@ -300,6 +300,11 @@ class App extends Component {
                 onChangeText={(username) => this.props.setPassword(username)}
               />
               }
+              {
+                this.props.fetchReducer.isVerifyFail && !this.props.fetchReducer.isFetching &&
+                <Text style={[{ fontSize: 12,color:'#E74C3C' }]}>Invalid username or password</Text>
+              }
+        
               {/*  <View style={{ width: '80%', paddingTop: 15 }}>
               <Button onPress={() => {
                 this.props.userLogin(this.props.fetchReducer.username, this.props.fetchReducer.password);

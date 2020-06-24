@@ -17,7 +17,8 @@ import {
     GET_CURRENTTIME,
     SET_UPDATETIMEMIN,
     FETCHING_FINDLOCATION,
-    FETCHING_UPLOADCHECKIMAGE
+    FETCHING_UPLOADCHECKIMAGE,
+    ACTION_LOGINFAIL
 } from '../constants'
 
 const initialState = {
@@ -30,6 +31,7 @@ const initialState = {
     divnId: '',
     username: '',
     password: '',
+    isVerifyFail : false,
     fullName: '',
     position: '',
     active: false,
@@ -96,7 +98,8 @@ export default (state = initialState, { type, payload }) => {
                 checkOutLocation: payload.logTA.checkOutLocation,
                 newsList: payload.rsContent,
                 currentTime: payload.rsTime.currentTime,
-                currentDate : payload.rsTime.currentDate
+                currentDate : payload.rsTime.currentDate,
+                isVerifyFail : true
             };
 
         case SET_USERNAME:
@@ -117,6 +120,9 @@ export default (state = initialState, { type, payload }) => {
                 isFetchingUploadCheckImage: false,
                 isFetching: false
             }
+        
+        case ACTION_LOGINFAIL : 
+            return {...state , isVerifyFail : true , isFetching : false}
 
         case ACTION_CHECKOUT:
             return {
