@@ -153,7 +153,7 @@ export const getTimeAttend = () => {
         axios.post(URL_WS_ATTEND + "getTimeAttend", { token: token, userId: userId })
           .then(result => {
             var data = result.data;
-
+            console.log(data);
             var checkInTime = (data.checkInDate != null) ? data.checkInDate.split(' ')[1].substring(0, 5) : ' -- . --';
             var checkOutTime = (data.checkOutDate != null) ? data.checkOutDate.split(' ')[1].substring(0, 5) : ' -- . --';
 
@@ -162,7 +162,8 @@ export const getTimeAttend = () => {
                 checkInTime: checkInTime,
                 checkOutTime: checkOutTime,
                 checkInLocation: data.checkInLocation,
-                checkOutLocation: data.checkOutLocation
+                checkOutLocation: data.checkOutLocation,
+                workingTime : data.workingTime
               }
             );
 
@@ -197,7 +198,7 @@ export const confirmChk = (tempId, typeCheck, isInside) => {
     axios.post(URL_WS_ATTEND + type, sendData)
       .then(result => {
         var data = result.data;
-
+        //console.log(data);
         if (data.status == "success") {
           return resolve(true);
         }

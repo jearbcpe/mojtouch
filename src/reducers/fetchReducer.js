@@ -36,6 +36,7 @@ const initialState = {
     position: '',
     active: false,
     alreadyCheckIn: false,
+    workingTime : true,
     waitConfirm: false,
     timeCheckConfirm: '',
     typeCheckConfirm: '',
@@ -172,7 +173,8 @@ export default (state = initialState, { type, payload }) => {
                 newsList: payload.rsContent,
                 currentTime: payload.rsTime.currentTime,
                 currentDate : payload.rsTime.currentDate,
-                isFetching: false
+                isFetching: false,
+                workingTime : payload.logTA.workingTime
             }
 
         case ACTION_EXPIRETOKEN:

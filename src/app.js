@@ -39,7 +39,7 @@ const stylesList = StyleSheet.create({
   datetime: {
     fontStyle: 'italic',
     fontSize: 12
-  }
+  } 
 });
 
 const styles = StyleSheet.create({
@@ -278,7 +278,7 @@ class App extends Component {
       <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
         <View style={{ flex: 1, backgroundColor: '#8EBFBB' }}>
           {
-            !this.props.fetchReducer.active &&
+            !this.props.fetchReducer.active && 
             <View style={styles.LoginContainer}>
               <Text style={styles.Text}>Welcome</Text>
               <Image style={styles.Image}
@@ -286,13 +286,14 @@ class App extends Component {
                   uri: 'https://intranet.moj.go.th/assets/img/moj_logo.png',
                 }} />
               <Text style={[styles.Text, { fontSize: 16, paddingBottom: 15 }]}>MOJ TOUCH</Text>
-              {!this.props.fetchReducer.isFetching &&
+              { !this.props.fetchReducer.isFetching &&
               <TextInput style={styles.TextInput}
                 placeholder={'Username'} placeholderTextColor="#A34B62"
                 onChangeText={(username) => this.props.setUsername(username)}
               />
               }
-              {!this.props.fetchReducer.isFetching &&
+            
+              { !this.props.fetchReducer.isFetching &&
               <TextInput
                 secureTextEntry={true}
                 style={styles.TextInput}
@@ -300,10 +301,7 @@ class App extends Component {
                 onChangeText={(username) => this.props.setPassword(username)}
               />
               }
-              {
-                this.props.fetchReducer.isVerifyFail && !this.props.fetchReducer.isFetching &&
-                <Text style={[{ fontSize: 12,color:'#E74C3C' }]}>Invalid username or password</Text>
-              }
+              
         
               {/*  <View style={{ width: '80%', paddingTop: 15 }}>
               <Button onPress={() => {
@@ -312,7 +310,7 @@ class App extends Component {
               }
               } title={'Login'} color="#0365A7" />
             </View> */}
-               {!this.props.fetchReducer.isFetching &&
+               { !this.props.fetchReducer.isFetching &&
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
@@ -321,7 +319,8 @@ class App extends Component {
                   backgroundColor: '#0365A7',
                   borderRadius: 3,
                   alignItems: 'center',
-                  marginTop: '3%'
+                  marginTop: '3%',
+                  marginBottom : '3%'
                 }}
                 onPress={() => {
                   this.props.userLogin(this.props.fetchReducer.username, this.props.fetchReducer.password);
@@ -332,7 +331,15 @@ class App extends Component {
                 <Text style={{ color: 'white', fontSize: 13 }}>LOGIN</Text>
               </TouchableOpacity>
   }
-     {!this.props.fetchReducer.isFetching &&
+  { 
+                this.props.fetchReducer.isFetching &&
+               <ActivityIndicator color="#0365A7" size={25} style={{height:20}} />
+              }
+              {
+                this.props.fetchReducer.isVerifyFail && !this.props.fetchReducer.isFetching &&
+                <Text style={[{ fontSize: 12,color:'#E74C3C' }]}>Invalid username or password</Text>
+              }
+              {/* {!this.props.fetchReducer.isFetching &&
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
@@ -347,11 +354,8 @@ class App extends Component {
               >
                 <Text style={{ color: 'white', fontSize: 13 }}>ENROLL</Text>
               </TouchableOpacity>
-              }
-              {
-                this.props.fetchReducer.isFetching &&
-               <ActivityIndicator color="#0365A7" size={25} />
-              }
+              } */}
+              
              
 
 
@@ -497,6 +501,7 @@ class App extends Component {
                         }
                       </View>
                       <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center' }}>
+                        { this.props.fetchReducer.workingTime &&
                         <View style={[styles.circleTakePhoto, (this.props.fetchReducer.waitConfirm) ? borderCheck.captureConfirm : (this.props.fetchReducer.alreadyCheckIn) ? borderCheck.captureCheckOut : borderCheck.captureCheckIn, { flexDirection: 'column', alignItems: 'center' }]}>
 
                           <TouchableOpacity
@@ -549,6 +554,7 @@ class App extends Component {
 
                           </TouchableOpacity>
                         </View>
+          }
                       </View>
                       <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center' }}>
                         {
