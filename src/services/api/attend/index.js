@@ -153,7 +153,7 @@ export const getTimeAttend = () => {
         axios.post(URL_WS_ATTEND + "getTimeAttend", { token: token, userId: userId })
           .then(result => {
             var data = result.data;
-            console.log(data);
+            //console.log(data);
             var checkInTime = (data.checkInDate != null) ? data.checkInDate.split(' ')[1].substring(0, 5) : ' -- . --';
             var checkOutTime = (data.checkOutDate != null) ? data.checkOutDate.split(' ')[1].substring(0, 5) : ' -- . --';
 
