@@ -147,11 +147,20 @@ const stylesLink = StyleSheet.create({
   }
 });
 
+const styleTextAttend = StyleSheet.create({
+  textCheckIn : {
+    color : '#28A745'
+  },
+  textCheckOut : {
+    color : '#A34B62'
+  }
+});
+
 const borderCheck = StyleSheet.create({
   captureCheckIn: {
     borderColor: 'white',
     borderWidth: 2,
-    backgroundColor: '#8EBFBB', //green
+    backgroundColor: '#28A745', //green
     width: 68,
     height: 68,
     borderRadius: 68 / 2,
@@ -247,7 +256,7 @@ class App extends Component {
     this.setState({ activeTab: 'news' });
     setInterval(() => {       
       if(this.state.activeTab == "attend" && this.props.fetchReducer.active){
-        if(!this.props.fetchReducer.waitConfirm)
+        if(!(this.props.fetchReducer.waitConfirm || this.props.fetchReducer.isFetchingLocation || this.props.fetchReducer.isFetchingUploadCheckImage))
           this.props.checkStillOnline();
       }
     }, 30000);
@@ -461,7 +470,7 @@ class App extends Component {
                       }
                     </View>
                     <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center' }}>
-                     
+                    
                       {
                         this.props.fetchReducer.waitConfirm &&
                         <Switch
@@ -483,7 +492,7 @@ class App extends Component {
                     </View>
 
                   </View>
-                  <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 25, alignItems: 'center', width: '100%' }}>
+                  <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: '0.02%', alignItems: 'center', width: '100%' }}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
                       <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center' }}>
                         {
@@ -492,10 +501,10 @@ class App extends Component {
 
 
                             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                              <Text style={{ flex: 1, fontSize: 15, color: '#FFFFFF' }} >{(this.props.fetchReducer.typeCheckConfirm=="IN") ? 'เข้า' : 'ออก'}</Text>
+                              <Text style={[{ flex: 1, fontSize: 15 },(this.props.fetchReducer.typeCheckConfirm=="IN") ? styleTextAttend.textCheckIn : styleTextAttend.textCheckOut ]} >{(this.props.fetchReducer.typeCheckConfirm=="IN") ? 'เข้า' : 'ออก'}</Text>
                             </View>
                             <View style={{ flex: 2, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                              <Text style={{ flex: 1, fontSize: 15, color: '#FFFFFF' }} >{this.props.fetchReducer.timeCheckConfirm} น.</Text>
+                              <Text style={[{ flex: 1, fontSize: 15 },(this.props.fetchReducer.typeCheckConfirm=="IN") ? styleTextAttend.textCheckIn : styleTextAttend.textCheckOut ]} >{this.props.fetchReducer.timeCheckConfirm} น.</Text>
                             </View>
                           </View>
                         }
@@ -541,15 +550,15 @@ class App extends Component {
                               }
                               {
                                 this.props.fetchReducer.isFetchingLocation &&
-                                <Icon size={30} color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#8EBFBB'}  name="crosshairs-gps" />
+                                <Icon size={30} color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#28A745'}  name="crosshairs-gps" />
                               }
                                {
                                 this.props.fetchReducer.isFetchingUploadCheckImage &&
-                                <Icon size={30} color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#8EBFBB'}  name="image-move" />
+                                <Icon size={30} color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#28A745'}  name="image-move" />
                               }
                               {
                                 !this.props.fetchReducer.isFetchingLocation && !this.props.fetchReducer.isFetchingUploadCheckImage && //!this.props.fetchReducer.isFetching &&
-                                <Icon size={45} color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#8EBFBB'} name={(this.props.fetchReducer.waitConfirm ? 'check' : 'run')} />
+                                <Icon size={45} color={this.props.fetchReducer.waitConfirm ? '#0364A7' : this.props.fetchReducer.alreadyCheckIn ? '#A34B62' : '#28A745'} name={(this.props.fetchReducer.waitConfirm ? 'check' : 'run')} />
                               }
 
                           </TouchableOpacity>
@@ -572,14 +581,22 @@ class App extends Component {
                                 ]
                               }>
                               {/* <Icon size={30} color="#FFFFFF" name="close" /> */}
-                              <Text style={{ flex: 1, fontSize: 15, color: '#FFFFFF' }} >ยกเลิก</Text>
+                              <Text style={[{ flex: 1, fontSize: 15,},((this.props.fetchReducer.typeCheckConfirm=="IN") ? styleTextAttend.textCheckIn : styleTextAttend.textCheckOut )]} >ยกเลิก</Text>
 
                             </TouchableOpacity>
+
                           </View>
                         }
                       </View>
-
                     </View>
+                  </View>
+                  <View style={{height:20,width:'100%',marginBottom:'2%',flexDirection:'column',alignItems:'center'}} >
+                  { this.props.fetchReducer.isFetchingLocation &&
+                      <Text style={[{ flex: 1, fontSize: 15 },(!this.props.fetchReducer.alreadyCheckIn) ? styleTextAttend.textCheckIn : styleTextAttend.textCheckOut]} >กำลังค้นหาตำแหน่ง...</Text>
+                  }
+                  { this.props.fetchReducer.isFetchingUploadCheckImage &&
+                  <Text style={[{ flex: 1, fontSize: 15, },(!this.props.fetchReducer.alreadyCheckIn) ? styleTextAttend.textCheckIn : styleTextAttend.textCheckOut]} >กำลังส่งรูปภาพ...</Text>
+                  }
                   </View>
 
                 </RNCamera>

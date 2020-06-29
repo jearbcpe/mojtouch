@@ -165,7 +165,7 @@ export default (state = initialState, { type, payload }) => {
                 fullName: payload.userData.fullName,
                 position: payload.userData.position,
                 alreadyCheckIn: payload.userData.alreadyCheckIn,
-                waitConfirm: false,
+                //waitConfirm: false,
                 checkInTime: payload.logTA.checkInTime,
                 checkOutTime: payload.logTA.checkOutTime,
                 checkInLocation: payload.logTA.checkInLocation,
