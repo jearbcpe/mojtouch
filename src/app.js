@@ -202,7 +202,7 @@ class App extends Component {
       key: 'news',
       icon: 'home',
       label: 'หน้าแรก',
-      barColor: '#A34B62',
+      barColor: '#8EBFBB',
       pressColor: 'rgba(245, 245, 245, 0.16)'
     },
     {
@@ -216,7 +216,7 @@ class App extends Component {
       key: 'profile',
       icon: 'account',
       label: 'ประวัติ',
-      barColor: '#8EBFBB',
+      barColor: '#A34B62',
       pressColor: 'rgba(245, 245, 245, 0.16)'
     }
   ]
@@ -469,7 +469,7 @@ class App extends Component {
                         <Icon size={30} color={(!this.props.fetchReducer.insideCheckConfirm) ? '#f5dd4b' : 'white'} name="home" />
                       }
                     </View>
-                    <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center' }}>
+                    <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                     
                       {
                         this.props.fetchReducer.waitConfirm &&
