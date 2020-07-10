@@ -103,7 +103,7 @@ export const login = (username, password) => {
   return new Promise((resolve, reject) => {
     //const url_ws_user = "https://portal.moj.go.th/ws/user.php/verifyUser";
     //const url_ws_attend = "https://portal.moj.go.th/ws/attend.php/checkAlreadyCheckIn";
-    axios.post(URL_WS_USER + "verifyUser", { username: username, password: password })
+    axios.post(URL_WS_USER + "verifyUser", { username: username, password: password , platform : 'mobile' })
       .then(res => {
         var rs = res.data;
         if (rs.status == "success") {
