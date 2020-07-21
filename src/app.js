@@ -704,6 +704,7 @@ class App extends Component {
                   <Text style={[stylesList.title, { fontWeight: 'bold' }]}>ข่าวประชาสัมพันธ์</Text>
                 </View>
                 <FlatList
+                  ref={(ref) => { this.flatListRef = ref; }}
                   data={this.props.fetchReducer.newsList}
                   renderItem={({ item }) =>
                     <View style={[{ flex: 1, flexDirection: 'column' }]}>
@@ -712,7 +713,7 @@ class App extends Component {
                         <View style={{ flex: 1 }}>
                           <Image style={{ width: 45, height: 45 }}
                             source={{
-                              uri: 'http://intranet.moj.go.th/' + item.divnLogo,
+                              uri: 'http://intranet.moj.go.th/assets/img/logo/' + item.divnLogo,
                             }} />
                         </View>
                         <View style={{ flex: 5, flexDirection: 'column' }}>
@@ -729,7 +730,7 @@ class App extends Component {
                         <Image style={[(item.widthMore ? styleImageView.widthMore : styleImageView.heightMore)]}
                           resizeMode="contain"
                           source={{
-                            uri: (item.newsImage != '') ? 'http://intranet.moj.go.th/' + item.newsImage : null,
+                            uri: (item.newsImage != '') ? 'http://intranet.moj.go.th/ws/uploads/' + item.newsImage : null,
                           }} />
                       </View>
  {/*                      <View style={[stylesList.item, { flex: 1, flexDirection: 'column',justifyContent:'flex-start',alignItems:'center',borderBottomWidth:1,borderColor:'#E5E7E9'}]}>
@@ -818,6 +819,13 @@ class App extends Component {
                   this.setState({ activeTab: newTab.key }); 
                   this.props.checkStillOnline();
                 }
+                
+                if(newTab.key == "news")
+                {
+                  if(this.state.activeTab=="news")
+                    this.flatListRef.scrollToOffset({ animated: true, offset: 0 });
+                  this.props.getNews(this.props.fetchReducer.divnId);
+                }
               }}
               renderTab={this.renderTab}
               tabs={this.tabs}
@@ -848,7 +856,7 @@ const mapDispatchToProps = (dispatch) => ({
   cancelCheck: (camera) => { dispatch(cancelCheck(camera)) },
   switchLocation: () => { dispatch(switchLocation()) },
   confirmCheck: (tempId,typeCheck,isInside,camera) => { dispatch(confirmCheck(tempId,typeCheck,isInside,camera)) },
-  getNews: () => { dispatch(getNews()) },
+  getNews: (divnId) => { dispatch(getNews(divnId)) },
   updateTimeMin : () => { dispatch(updateTimeMin())},
   getCurrentTime : () => { dispatch(getCurrentTime())}
 });

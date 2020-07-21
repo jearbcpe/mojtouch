@@ -88,7 +88,7 @@ export const userLogin = (username, password) => {
                 if(rsUser){
                     getTimeAttend()
                     .then(rsTA => {
-                        getContentNews().then(rsContent => {
+                        getContentNews(rsUser.divnId).then(rsContent => {
                             getTime().then(rsTime => {
                                 dispatch(setStageToLogin({
                                     userData: rsUser, logTA: rsTA, rsContent: rsContent,rsTime:rsTime
@@ -133,7 +133,7 @@ export const checkStillOnline = () => {
                    
                     getTimeAttend()
                         .then(rsTA => {
-                            getContentNews().then(rsContent => {
+                            getContentNews(rsToken.divnId).then(rsContent => {
                                 getTime().then(rsTime => {
                                    
                                     dispatch(setStageToVerifyToken({

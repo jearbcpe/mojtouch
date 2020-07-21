@@ -30,5 +30,8 @@ export const SET_UPDATETIMEMIN = "SET_UPDATETIMEMIN";
 
 export const URL_WS_USER = "https://portal.moj.go.th/ws/user.php/";
 export const URL_WS_ATTEND = "https://portal.moj.go.th/ws/attend.php/";
-export const URL_WS_NEWS = "http://intranet.moj.go.th/assets/jsonData/news.json";
+//export const URL_WS_NEWS = "http://intranet.moj.go.th/assets/jsonData/news.json";
+
+export const URL_WS_LISTNEWS = "https://portal.moj.go.th/ws/content.php/retrieveListContentAndDetail";
+export const URL_WS_NEWS = "https://portal.moj.go.th/ws/content.php/retrieveContent";
 export const URL_WS_MASTER = "https://portal.moj.go.th/ws/master.php/";
