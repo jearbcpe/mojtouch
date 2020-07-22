@@ -149,10 +149,12 @@ const stylesLink = StyleSheet.create({
 
 const styleTextAttend = StyleSheet.create({
   textCheckIn : {
-    color : '#28A745'
+    //color : '#28A745'
+    color : 'white'
   },
   textCheckOut : {
-    color : '#A34B62'
+    //color : '#A34B62'
+    color : 'white'
   }
 });
 
@@ -624,16 +626,7 @@ class App extends Component {
                 </View>
                 <ScrollView horizontal={true} style={[stylesLink.scrollViewLink]} showsHorizontalScrollIndicator={false}>
                   <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', paddingBottom: '1%' }}>
-                  <TouchableOpacity style={{ flex: 1, width: 80, height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}
-                    onPress={ ()=>{ Linking.openURL('https://intranet.moj.go.th')}}
-                    >
-                      <View style={{ flex: 1 }}>
-                        <Icon size={20} color="#2ECC71" name="blur" />
-                      </View>
-                      <View style={{ flex: 1, justifyContent: 'flex-start',marginTop:2 }}>
-                        <Text style={stylesLink.txtName}>intranet</Text>
-                      </View>
-                    </TouchableOpacity>
+                  
                     <TouchableOpacity style={{ flex: 1, width: 80, height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}
                     onPress={ ()=>{ Linking.openURL('https://saraban.moj.go.th')}}
                     >
@@ -692,6 +685,16 @@ class App extends Component {
                       </View>
                       <View style={{ flex: 1, justifyContent: 'flex-start',marginTop:2  }}>
                         <Text style={stylesLink.txtName}>slip</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flex: 1, width: 80, height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}
+                    onPress={ ()=>{ Linking.openURL('https://intranet.moj.go.th')}}
+                    >
+                      <View style={{ flex: 1 }}>
+                        <Icon size={20} color="#2ECC71" name="blur" />
+                      </View>
+                      <View style={{ flex: 1, justifyContent: 'flex-start',marginTop:2 }}>
+                        <Text style={stylesLink.txtName}>intranet</Text>
                       </View>
                     </TouchableOpacity>
                   </View>
