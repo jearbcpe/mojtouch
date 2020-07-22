@@ -7,16 +7,18 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export const findLocation = async (camera) => {
   return new Promise((resolve, reject) => {
-    const options = { quality: 0.5, base64: true };
+    //const options = { quality: 0.1, base64: true , maxFileSize : 0.5*1024*1024 };
+    const options = { quality: 0.5, base64: true ,width:640,fixOrientation:true };
     camera.takePictureAsync(options).then(imgData => {
       camera.pausePreview();
       Geolocation.getCurrentPosition((info) => {
         var lat = info.coords.latitude;
         var long = info.coords.longitude;
-        const filepath = imgData.uri.split('//')[1];
-        RNFS.readFile(filepath, 'base64').then(imgBase64 => {
-          return resolve({ lat: lat, long: long, imgBase64, imgBase64 });
-        });
+        //const filepath = imgData.uri.split('//')[1];
+        //RNFS.readFile(filepath, 'base64').then(imgBase64 => {
+          console.log(imgData.base64)
+          return resolve({ lat: lat, long: long, imgBase64 : imgData.base64 });
+        //});
 
       }, (error) => { console.log(error) }, { maximumAge: 15000, timeout: 200000 })
     })
@@ -26,7 +28,6 @@ export const findLocation = async (camera) => {
 }
 
 export const tempCheckIn = async (token, userId, divnId, imgBase64, lat, long) => {
-
 
   //if (camera) {
   /* const options = { quality: 0.5, base64: true };
@@ -83,6 +84,7 @@ export const tempCheckIn = async (token, userId, divnId, imgBase64, lat, long) =
 }
 
 export const tempCheckOut = async (token, userId, divnId, imgBase64, lat, long) => {
+
 
   //if (camera) {
   //camera.pausePreview();
