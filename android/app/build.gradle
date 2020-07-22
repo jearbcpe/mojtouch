@@ -132,8 +132,8 @@ android {
         applicationId "com.mojtouch"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 9
-        versionName "1.0"
+        versionCode 10
+        versionName "1.1"
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true //for android 5.0
     }

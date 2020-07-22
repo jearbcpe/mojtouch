@@ -514,7 +514,7 @@ class App extends Component {
                         <View style={[styles.circleTakePhoto, (this.props.fetchReducer.waitConfirm) ? borderCheck.captureConfirm : (this.props.fetchReducer.alreadyCheckIn) ? borderCheck.captureCheckOut : borderCheck.captureCheckIn, { flexDirection: 'column', alignItems: 'center' }]}>
 
                           <TouchableOpacity
-                           // disabled={(this.props.fetchReducer.isFetching) ? true : false }
+                            disabled={(this.props.fetchReducer.isFetchingLocation || this.props.fetchReducer.isFetchingUploadCheckImage) ? true : false }
                             onPress={
                               () => {
                                 //console.log(this.props.fetchReducer.isFetching)
