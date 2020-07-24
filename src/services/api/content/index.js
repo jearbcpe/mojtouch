@@ -11,6 +11,7 @@ export const getContentNews = (divnId) => {
                 for(var x in data){
                     //console.log(data[x].fileList[0].new_file_name)
                     //console.log(data[x].news_type)
+                    //console.log(data[x].widthMore)
                     var widthMore = false;
                         if(data[x].widthMore=="1")
                             widthMore = true;
